@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************************
+* Copyright (c) 2014 École Polytechnique de Montréal
+*
+* All rights reserved. This program and the accompanying materials are
+* made available under the terms of the Eclipse Public License v1.0 which
+* accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+* 	Geneviève Bastien - Initial API and implementation
+*************************************************************************** -->
+<tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="xmlDefinition.xsd">
+
+	<xyView id="tensorflow.bfc_allocations">
+		<head>
+			<analysis id="bfc_allocations" />
+			<label value="BFC Allocations" />
+		</head>
+
+		<entry path="Allocations/*/*" displayType="absolute"> 
+			<display type="self" />
+		</entry>
+	</xyView>
+
+	<stateProvider id="bfc_allocations" version="1">
+		<head>
+			<traceType id="org.eclipse.linuxtools.lttng2.ust.tracetype" />
+			<label value="BFC Allocations" />
+		</head>
+
+		<!-- case 1 : exit_syscall : Fields: int64 ret -->
+		<eventHandler eventName="tensorflowTracer:bfc_allocator_stats">
+			<stateChange>
+				<stateAttribute type="constant" value="Allocations" />
+				<stateAttribute type="constant" value="bytes_in_use" />
+				<stateAttribute type="eventField" value="allocator_name" />
+				<stateValue type="eventField" value="bytes_in_use" increment="false" />
+			</stateChange>
+			<stateChange>
+				<stateAttribute type="constant" value="Allocations" />
+				<stateAttribute type="constant" value="num_allocs" />
+				<stateAttribute type="eventField" value="allocator_name" />
+				<stateValue type="eventField" value="num_allocs" increment="false" />
+			</stateChange>
+		</eventHandler>
+	</stateProvider>
+</tmfxml>
