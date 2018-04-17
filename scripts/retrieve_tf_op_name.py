@@ -14,6 +14,8 @@ import re
 import os
 import argparse
 
+print("========== GET TF OP NAME ==========")
+
 # parse argument to get the program name and path
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_trace")
@@ -84,7 +86,7 @@ class State():
 
 list_tf_op = []
 
-
+print("========== READ TRACE AND GET TF OP ==========")
 for r_event in collection.events:
     name = r_event.name
 
@@ -131,11 +133,9 @@ for r_event in collection.events:
         # states.append(open_state[matching_index])
         # del open_state[matching_index]
         open_state = None
-# print(len(list_tf_op))
-print(len(list_tf_op))
-# rewrite the trace by changing the tf_name field
-print("Start writing the traces")
 
+
+# rewrite the trace by changing the tf_name field
 # Set the output trace
 if args.output_trace == None:
     out_path = os.getcwd() + "/../results"
@@ -169,6 +169,7 @@ main_stream = writer.create_stream(main_stream_class)
 events = defaultdict(list)
 
 
+print("========== COMPUTE NEW TRACE WITH TF OP ==========")
 cnt_kernel = 0
 for r_event in collection.events:
     name = r_event.name
@@ -206,6 +207,7 @@ for r_event in collection.events:
 timestamps = list(events.keys())
 timestamps.sort()
 
+print("========== WRITE TRACE ==========")
 for timestamp in timestamps:
     clock.time = timestamp
     for i in range(len(events[timestamp])):

@@ -3,6 +3,7 @@ import subprocess
 import argparse
 import getpass
 
+print("========== START TENSORFLOW PROFILER ==========")
 # parse argument to get the program name and path
 parser = argparse.ArgumentParser()
 parser.add_argument("--tf_script")

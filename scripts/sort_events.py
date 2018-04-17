@@ -10,6 +10,8 @@ import os
 from collections import defaultdict
 import argparse
 
+print("\n========== SORT EVENTS ==========")
+
 # parse argument to get the program name and path
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_trace")
@@ -148,6 +150,7 @@ for r_event in collection.events:
 
 
 if args.parse_kernel_log != None:
+    print("========== PARSE KERNELS LOGS ==========")
     hc_kernels = []
     hc_copy = []
     hc_barrier = []
@@ -236,6 +239,7 @@ if args.parse_kernel_log != None:
 timestamps = list(events.keys())
 timestamps.sort()
 
+print("========== WRITE TRACE ==========")
 for timestamp in timestamps:
     clock.time = timestamp
     for i in range(len(events[timestamp])):

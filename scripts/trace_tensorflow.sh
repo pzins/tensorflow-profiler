@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "========= START LTTNG ========="
+
 # constants
 NUM_SUBBUFF_UST=100
 SUBBUFF_SIZE_UST=131072
@@ -16,7 +18,6 @@ grpc_tracing="False"
 
 # parse arguments
 while getopts ':n:s:m:r:kpg' o; do
-    echo "$OPTIND"
     case "${o}" in
         n)
             n=${OPTARG}
@@ -40,7 +41,6 @@ while getopts ':n:s:m:r:kpg' o; do
             grpc_tracing="True"
             ;;
         *)
-            echo ${o}
             usage
             ;;
     esac
