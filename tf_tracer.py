@@ -2,21 +2,22 @@ import os
 import subprocess
 import argparse
 import getpass
+from scripts.utils import debugPrint
 
-print("========== START TENSORFLOW PROFILER ==========")
 # parse argument to get the program name and path
-parser = argparse.ArgumentParser()
-parser.add_argument("--tf_script")
-parser.add_argument("--kernels_mode", required=True)
-parser.add_argument("--num_subbuff_ust", type=str)
-parser.add_argument("--subbuff_size_ust", type=str)
-parser.add_argument("--num_subbuff_kernel", type=str)
-parser.add_argument("--subbuff_size_kernel", type=str)
-parser.add_argument("-k", action='store_true')
-parser.add_argument("-p", action='store_true')
-parser.add_argument("-g", action='store_true')
+parser = argparse.ArgumentParser(description="Profile a TensorFlow application")
+parser.add_argument("--tf_script", help="Set the TensorFlow script")
+parser.add_argument("--kernels_mode", required=True, help="How we collet gpu kernels information")
+parser.add_argument("--num_subbuff_ust", type=str, help="Lttng number of subbuffer UST")
+parser.add_argument("--subbuff_size_ust", type=str, help="Lttng size of subbuffers UST")
+parser.add_argument("--num_subbuff_kernel", type=str, help="Lttng number of subbuffer KERNEL")
+parser.add_argument("--subbuff_size_kernel", type=str, help="Lttng size of subbuffers KERNEL")
+parser.add_argument("-k", action='store_true', help="Activate linux kernel tracing")
+parser.add_argument("-p", action='store_true', help="Activate python tracing")
+parser.add_argument("-g", action='store_true', help="Activate GRPC tracing")
 args = parser.parse_args()
 
+debugPrint("START TENSORFLOW PROFILER")
 
 # tensorflow script
 tensorflow_script = args.tf_script.split("/")[-1]
@@ -100,7 +101,7 @@ tf_op_name = "retrieve_tf_op_name.py"
 fix_metadata = "vtid.py"
 
 # Start tracing scripts
-start_tracing = "trace_tensorflow.sh "
+start_tracing = "start_tracing.sh "
 
 # parse start tracing arguments
 start_tracing_args = " "

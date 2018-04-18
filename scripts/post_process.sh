@@ -32,3 +32,4 @@ else
     python3 retrieve_tf_op_name.py
 fi 
 
+python3 vtid.py

@@ -18,11 +18,11 @@ def runProgramTF():
     with cd(path_to_tf_script):
         if env.host == "132.207.72.31":
             with settings(hide('warnings'), warn_only=True):
-                run("set -x HIP_PROFILE_API 2; set -x HCC_PROFILE 2; python3 mlp_master.py w")
+                run("set -x HIP_PROFILE_API 2; set -x HCC_PROFILE 2; python3 rnn_distributed.py w")
         else:
-            run("set -x HIP_PROFILE_API 2; set -x HCC_PROFILE 2; python3 mlp_master.py m")
+            run("set -x HIP_PROFILE_API 2; set -x HCC_PROFILE 2; python3 rnn_distributed.py m")
             with settings(host_string='132.207.72.31'):
-                prog_name=  "mlp_master"
+                prog_name=  "rnn_distributed"
                 run("kill -SIGKILL (ps -aux | grep " + prog_name + " | grep -v grep | awk '{print $2}')")
 
 @task
