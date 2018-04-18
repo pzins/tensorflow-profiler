@@ -37,7 +37,7 @@ while true; do
     --hsa ) HSA="$2"; shift 2;;
     -h | --help ) usage; shift;;
     -- ) shift; break ;;
-    * ) usage; break ;;
+    * ) break ;;
   esac
 done
 

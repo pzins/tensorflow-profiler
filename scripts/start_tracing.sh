@@ -38,7 +38,7 @@ while true; do
     --subbuff_size_kernel ) subbuff_size_kernel="$2"; shift 2;;
     -h | --help ) usage; shift;;
     -- ) shift; break ;;
-    * ) usage; break ;;
+    * ) break ;;
   esac
 done
 

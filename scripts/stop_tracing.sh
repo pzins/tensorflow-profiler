@@ -13,7 +13,7 @@ while true; do
         -k | --kernel ) is_sudo=sudo; shift;;
         -h | --help ) usage; shift;;
         -- ) shift; break ;;
-        * ) usage; break ;;
+        * ) break ;;
     esac
 done
 
