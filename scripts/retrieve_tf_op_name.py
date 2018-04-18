@@ -13,13 +13,13 @@ from collections import defaultdict
 import re
 import os
 import argparse
+from utils import debugPrint
 
-print("========== GET TF OP NAME ==========")
-
+debugPrint("GET TF OP NAME")
 # parse argument to get the program name and path
-parser = argparse.ArgumentParser()
-parser.add_argument("--input_trace")
-parser.add_argument("--output_trace")
+parser = argparse.ArgumentParser("Replace GPU kernels name with the corresponding TensorFlow operation")
+parser.add_argument("--input_trace", help="set the input trace")
+parser.add_argument("--output_trace", help="set the output trace destination")
 args = parser.parse_args()
 
 
@@ -86,7 +86,7 @@ class State():
 
 list_tf_op = []
 
-print("========== READ TRACE AND GET TF OP ==========")
+debugPrint("READ TRACE AND GET TF OP")
 for r_event in collection.events:
     name = r_event.name
 
@@ -169,7 +169,7 @@ main_stream = writer.create_stream(main_stream_class)
 events = defaultdict(list)
 
 
-print("========== COMPUTE NEW TRACE WITH TF OP ==========")
+debugPrint("COMPUTE NEW TRACE WITH TF OP")
 cnt_kernel = 0
 for r_event in collection.events:
     name = r_event.name
@@ -207,7 +207,7 @@ for r_event in collection.events:
 timestamps = list(events.keys())
 timestamps.sort()
 
-print("========== WRITE TRACE ==========")
+debugPrint("WRITE TRACE")
 for timestamp in timestamps:
     clock.time = timestamp
     for i in range(len(events[timestamp])):

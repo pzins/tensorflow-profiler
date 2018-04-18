@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "========= START LTTNG ========="
 
 # constants
 NUM_SUBBUFF_UST=100
@@ -9,49 +8,46 @@ NUM_SUBBUFF_KERNEL=1000
 SUBBUFF_SIZE_KERNEL=131072
 
 
-usage() { echo "Usage: $0 [-n <int>] [-s <int>] [-m <int>] [-r <int>] [-k] [-p] [-g]" 1>&2; exit 1; }
+usage()
+{ 
+    echo "Usage: $0 [-k | --kernel] [-p | --python] [-g | --grpc] [---num_subbuff_ust <int>] [---subbuff_size_ust <int>] [---num_subbuff_kernel <int>] [---subbuff_size_kernel <int>]
+            
+            where:
+                -k | --kernel           : activate kernel tracing
+                -p | --python           : activate python tracing
+                -g | --grpc             : activate grpc tracing
+                --num_subbuff_ust       : lttng number of subbuffer UST
+                --subbuff_size_ust      : lttng size of subbuffers UST
+                --num_subbuff_kernel    : lttng number of subbuffer KERNEL
+                --subbuff_size_kernel   : lttng size of subbuffers KERNEL
+" 1>&2; exit 1; }
 
 # possible targets
 kernel_tracing="False"
 python_tracing="False"
 grpc_tracing="False"
 
-# parse arguments
-while getopts ':n:s:m:r:kpg' o; do
-    case "${o}" in
-        n)
-            n=${OPTARG}
-            ;;
-        s)
-            s=${OPTARG}
-            ;;
-        m)
-            m=${OPTARG}
-            ;;
-        r)
-            r=${OPTARG}
-            ;;
-        k)
-            kernel_tracing="True"
-            ;;
-        p)
-            python_tracing="True"
-            ;;
-        g)
-            grpc_tracing="True"
-            ;;
-        *)
-            usage
-            ;;
-    esac
+while true; do
+  case "$1" in
+    -k | --kernel ) kernel_tracing="True"; shift;;
+    -p | --python ) python_tracing="True"; shift;;
+    -g | --grpc ) grpc_tracing="True"; shift;;
+    --num_subbuff_ust ) num_subbuff_ust="$2"; shift 2;;
+    --subbuff_size_ust ) subbuff_size_ust="$2"; shift 2;;
+    --num_subbuff_kernel ) num_subbuff_kernel="$2"; shift 2;;
+    --subbuff_size_kernel ) subbuff_size_kernel="$2"; shift 2;;
+    -h | --help ) usage; shift;;
+    -- ) shift; break ;;
+    * ) usage; break ;;
+  esac
 done
 
 # if no provided value, use default values
-if [ -z "${n}" ] || [ -z "${s}" ] || [ -z "${m}" ] || [ -z "${r}" ]; then
-    n=$NUM_SUBBUFF_UST
-    s=$SUBBUFF_SIZE_UST
-    m=$NUM_SUBBUFF_KERNEL
-    r=$SUBBUFF_SIZE_KERNEL
+if [ -z "${num_subbuff_ust}" ] || [ -z "${subbuff_size_ust}" ] || [ -z "${num_subbuff_kernel}" ] || [ -z "${subbuff_size_kernel}" ]; then
+    num_subbuff_ust=$NUM_SUBBUFF_UST
+    subbuff_size_ust=$SUBBUFF_SIZE_UST
+    num_subbuff_kernel=$NUM_SUBBUFF_KERNEL
+    subbuff_size_kernel=$SUBBUFF_SIZE_KERNEL
 fi
 
 # decide if sudo is needed
@@ -67,7 +63,7 @@ trace_name="tensorflow-$(date '+%Y%m%d-%H%M%S')"
 $is_sudo lttng create tensorflow --output="/home/pierre/dev/tensorflow-profiler/lttng-traces/$trace_name"
 
 if [ "${is_sudo}" == "sudo" ]; then
-        $is_sudo lttng enable-channel -k kernelchannel --num-subbuf=${m} --subbuf-size=${r}
+        $is_sudo lttng enable-channel -k kernelchannel --num-subbuf=${num_subbuff_kernel} --subbuf-size=${subbuff_size_kernel}
         if [ "${kernel_tracing}" == "True" ]; then
             $is_sudo lttng enable-event -k -a --channel=kernelchannel
         elif [ "${grpc_tracing}" == "True" ]; then
@@ -75,7 +71,7 @@ if [ "${is_sudo}" == "sudo" ]; then
             $is_sudo lttng enable-event -k net_if_receive_skb --channel=kernelchannel
         fi
 fi
-$is_sudo lttng enable-channel -u ustchannel --num-subbuf=${n} --subbuf-size=${s}
+$is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --subbuf-size=${subbuff_size_ust}
 
 $is_sudo lttng enable-event --userspace "cuptiTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hsa_runtime:*" --channel=ustchannel

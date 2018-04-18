@@ -9,14 +9,17 @@ import time
 import os
 from collections import defaultdict
 import argparse
+from utils import debugPrint
 
-print("\n========== SORT EVENTS ==========")
+debugPrint("SORT EVENTS")
+
+
 
 # parse argument to get the program name and path
-parser = argparse.ArgumentParser()
-parser.add_argument("--input_trace")
-parser.add_argument("--output_trace")
-parser.add_argument("--parse_kernel_log")
+parser = argparse.ArgumentParser(description="Sort events")
+parser.add_argument("--input_trace", help="set the input trace")
+parser.add_argument("--output_trace", help="set the output trace destination")
+parser.add_argument("--parse_kernel_log", help="hc log file to get gpu kernels informations")
 args = parser.parse_args()
 
 # Add the input trace to the collection
@@ -150,7 +153,7 @@ for r_event in collection.events:
 
 
 if args.parse_kernel_log != None:
-    print("========== PARSE KERNELS LOGS ==========")
+    debugPrint("PARSE KERNELS LOGS")
     hc_kernels = []
     hc_copy = []
     hc_barrier = []
@@ -239,7 +242,7 @@ if args.parse_kernel_log != None:
 timestamps = list(events.keys())
 timestamps.sort()
 
-print("========== WRITE TRACE ==========")
+debugPrint("WRITE TRACE")
 for timestamp in timestamps:
     clock.time = timestamp
     for i in range(len(events[timestamp])):
