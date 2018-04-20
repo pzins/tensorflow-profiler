@@ -11,8 +11,8 @@ usage()
 
 while true; do
     case "$1" in
-        --sort ) SORT=true; shift;;
-        --tf_name ) TF_NAME=true; shift;;
+        -s | --sort ) SORT=true; shift;;
+        -t | --tf_name ) TF_NAME=true; shift;;
         -h | --help ) usage; shift;;
         -- ) shift; break ;;
         * ) break ;;
@@ -21,15 +21,15 @@ done
 
 
 if [ -z "$SORT" ]; then
-    echo "Don't sort events" 
+    echo "Don't sort events"
 else
     python3 sort_events.py
 fi
 
-if [ -z "$TF_NAME" ]; then 
+if [ -z "$TF_NAME" ]; then
     echo "Don't replace kernels name with TF ops"
 else
     python3 retrieve_tf_op_name.py
-fi 
+fi
 
 python3 vtid.py
