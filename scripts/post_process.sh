@@ -11,8 +11,8 @@ usage()
 
 while true; do
     case "$1" in
-        --sort ) SORT=true; shift;;
-        --tf_name ) TF_NAME=true; shift;;
+        -s | --sort ) SORT=true; shift;;
+        -t | --tf_name ) TF_NAME=true; shift;;
         -h | --help ) usage; shift;;
         -- ) shift; break ;;
         * ) break ;;
