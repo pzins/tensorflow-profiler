@@ -26,7 +26,7 @@ debugPrint("GET TF OP NAME")
 collection = btr.TraceCollection()
 
 if args.input_trace == None:
-    directory = "/tmp/out_traces"
+    directory = "/tmp/tensorflow-profiler"
 else:
     directory = args.input_trace
 collection.add_trace(directory, 'ctf')
