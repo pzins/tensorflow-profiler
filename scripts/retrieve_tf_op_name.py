@@ -16,7 +16,7 @@ import argparse
 from utils import debugPrint
 
 # parse argument to get the program name and path
-parser = argparse.ArgumentParser(description = "Replace GPU kernels name with the corresponding TensorFlow operation")
+parser = argparse.ArgumentParser(description="Replace GPU kernels name with the corresponding TensorFlow operation")
 parser.add_argument("--input_trace", help="set the input trace")
 parser.add_argument("--output_trace", help="set the output trace destination")
 args = parser.parse_args()
@@ -123,7 +123,7 @@ for r_event in collection.events:
         if open_state.isMatchingEndEvent(r_event, unique_id):
             open_state.setEndEvent(r_event)
             open_state.setEndTimestamp(r_event.timestamp)
-        
+
         # if no waiting state correspond to an end event. Not possible, so
         # we have errors
         # if matching_index == -1:
@@ -139,8 +139,8 @@ for r_event in collection.events:
 # Set the output trace
 if args.output_trace == None:
     out_path = os.getcwd() + "/../results"
-else:       
-    out_path = args.output_trace        
+else:
+    out_path = args.output_trace
 if not os.path.isdir(out_path):
     os.system("mkdir " + out_path)
 writer = btw.Writer(out_path)

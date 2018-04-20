@@ -11,7 +11,6 @@ from collections import defaultdict
 import argparse
 from utils import debugPrint
 
-debugPrint("SORT EVENTS")
 
 
 
@@ -22,6 +21,7 @@ parser.add_argument("--output_trace", help="set the output trace destination")
 parser.add_argument("--parse_kernel_log", help="hc log file to get gpu kernels informations")
 args = parser.parse_args()
 
+debugPrint("SORT EVENTS")
 # Add the input trace to the collection
 collection = btr.TraceCollection()
 
@@ -37,9 +37,9 @@ collection.add_trace(path + "/ust/uid/1000/64-bit", 'ctf')
 
 # Set the output trace
 if args.output_trace == None:
-    out_path = "/tmp/out_traces"
-else:       
-    out_path = args.output_trace        
+    out_path = "/tmp/tensorflow-profiler"
+else:
+    out_path = args.output_trace
 if not os.path.isdir(out_path):
     os.system("mkdir " + out_path)
 writer = btw.Writer(out_path)

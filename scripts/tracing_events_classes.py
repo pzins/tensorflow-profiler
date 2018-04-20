@@ -484,7 +484,7 @@ event_classes['tensorflowTracer:session_test_start'].add_field(string_fd, 'name'
 event_classes['tensorflowTracer:session_test_end'] = btw.EventClass('tensorflowTracer:session_test_end')
 event_classes['tensorflowTracer:session_test_end'].add_field(string_fd, 'cat')
 event_classes['tensorflowTracer:session_test_end'].add_field(string_fd, 'name')
- 
+
 event_classes['tensorflowTracer:session_start'] = btw.EventClass('tensorflowTracer:session_start')
 event_classes['tensorflowTracer:session_start'].add_field(string_fd, 'cat')
 event_classes['tensorflowTracer:session_start'].add_field(string_fd, 'name')
