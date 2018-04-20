@@ -2,30 +2,26 @@ from __future__ import with_statement
 from fabric.api import *
 from fabric.contrib.console import confirm
 from fabric.context_managers import cd, env
-computer_1_ip = "132.207.72.22"
-computer_2_ip = "132.207.72.31"
 
-computer_1_ip = "192.168.1.3"
-computer_2_ip = "192.168.1.5"
-
-tf_program_name = "cnn_distributed"
-
-
-_HOSTS = [ computer_2_ip, computer_1_ip ] 
-env.hosts = computer_2_ip
-env.shell = "/usr/bin/fish -l -i -c"
 
 @task
 @parallel
-def startTracing():
-    if env.host == computer_1_ip:
-        run("cd ~/dev/tensorflow-profiler/scripts/; bash grpc_master.sh")
-    if env.host == computer_2_ip:
-        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_worker.sh")
-    
+def startTracing(tf_file, ip_m, ip_w):
+    if env.host == ip_m:
+        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_master.sh -f " + tf_file + " -i " + ip_w)
+    if env.host == ip_w:
+        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_worker.sh -f " + tf_file + " -i " + ip_m)
+
 
 @task
-def main():
+def main(tf_file="cnn_distributed.py", ip_m="132.207.72.22", ip_w="132.207.72.31"):
+    
+    _HOSTS = [ ip_m, ip_w ] 
+    # env.hosts = computer_2_ip
+    env.shell = "/usr/bin/fish -l -i -c"
+    print(tf_file)
+    print(ip_m)
+    print(ip_w)
     with settings(password="pierreol"):
-        results = execute(startTracing, hosts=_HOSTS)
+        results = execute(startTracing, tf_file, ip_m, ip_w, hosts=_HOSTS)
 
