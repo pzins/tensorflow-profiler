@@ -7,8 +7,11 @@ bash start_tracing.sh -g
 
 bash set_env.sh --hip --hc 1
 cd /home/pierre/Dropbox/dev/distributed/in_model_parallelism/
+# python3 $tf_program_name.py m
 python3 $tf_program_name.py m > /dev/null 2>&1
 
+res=`ssh 192.168.1.5 ps -aux | grep cnn_distributed | grep -v grep | awk '{print $2}'`
+ssh 192.168.1.5 kill -SIGKILL $res
 
 cd $scripts_dir
 bash stop_tracing.sh -k
