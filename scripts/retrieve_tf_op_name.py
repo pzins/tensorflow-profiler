@@ -15,13 +15,13 @@ import os
 import argparse
 from utils import debugPrint
 
-debugPrint("GET TF OP NAME")
 # parse argument to get the program name and path
-parser = argparse.ArgumentParser("Replace GPU kernels name with the corresponding TensorFlow operation")
+parser = argparse.ArgumentParser(description = "Replace GPU kernels name with the corresponding TensorFlow operation")
 parser.add_argument("--input_trace", help="set the input trace")
 parser.add_argument("--output_trace", help="set the output trace destination")
 args = parser.parse_args()
 
+debugPrint("GET TF OP NAME")
 
 # Add the input trace to the collection
 collection = btr.TraceCollection()

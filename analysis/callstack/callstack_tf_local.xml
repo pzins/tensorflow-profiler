@@ -169,17 +169,6 @@
 			    </state>
 			    <final id="end_thread"/>
 			</fsm>
-			<fsm id="call_stack_tf_session_test" multiple="true" initial="Wait_thread_start">
-			    <state id="Wait_thread_start">
-			        <transition event="tensorflowTracer:session_test_start" target="loop" action="entering_thread:push_event_type"/>
-			    </state>
-			    <state id="loop">
-			        <transition event="tensorflowTracer:session_test_start" cond="name_name" target="loop" action="push_event_type" />
-			        <transition event="tensorflowTracer:session_test_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
-			        <transition event="tensorflowTracer:session_test_end" cond="name_name" target="loop" action="pop_event_type" />
-			    </state>
-			    <final id="end_thread"/>
-			</fsm>
 
 			<fsm id="call_stack_tf_op" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
@@ -201,6 +190,17 @@
 					<transition event="tensorflowTracer:async_operation_start" cond="async_name" target="loop" action="push_event_type" />
 					<transition event="tensorflowTracer:async_operation_end" cond="async_name:last_out" target="end_thread" action="pop_event_type"/>
 					<transition event="tensorflowTracer:async_operation_end" cond="async_name" target="loop" action="pop_event_type" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+			<fsm id="call_stack_rdv" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">				
+					<transition event="tensorflowTracer:rdv_send" target="loop" action="entering_thread:push_event_type"/>
+				</state>
+				<state id="loop">
+					<transition event="tensorflowTracer:rdv_send" cond="async_name" target="loop" action="push_event_type"/>
+					<transition event="tensorflowTracer:rdv_recv" cond="async_name:last_out" target="end_thread" action="pop_event_type"/>
+					<transition event="tensorflowTracer:rdv_recv" cond="async_name" target="loop" action="pop_event_type"/>
 				</state>
 				<final id="end_thread"/>
 			</fsm>
