@@ -15,6 +15,7 @@ bash stop_tracing.sh -k
 bash post_process.sh -s -t
 
 kernel_traces=`ls -t ../lttng-traces | head -1`
+
 ssh -A 192.168.1.3 mkdir ~/traces_grpc
-scp ../lttng-traces/$kernel_traces 192.168.1.3:~/traces_grpc/$kernel_traces_remote
-scp ../results 192.168.1.3:~/traces_grpc
+scp -r ../lttng-traces/$kernel_traces 192.168.1.3:~/traces_grpc/$kernel_traces_remote
+scp -r ../results 192.168.1.3:~/traces_grpc
