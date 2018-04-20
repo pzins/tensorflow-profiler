@@ -3,7 +3,6 @@ import babeltrace
 import babeltrace.reader as btr
 import babeltrace.writer as btw
 import sys
-from tracing_events_classes import event_classes
 from collections import defaultdict
 import time
 import os
@@ -71,6 +70,8 @@ writer.add_environment_field("tracer_minor", 7)
 main_stream_class = btw.StreamClass('main_stream')
 main_stream_class.clock = clock
 
+
+from tracing_events_classes import event_classes
 # Create stream
 for event_class in event_classes.values():
     main_stream_class.add_event_class(event_class)
