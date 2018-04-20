@@ -21,15 +21,15 @@ done
 
 
 if [ -z "$SORT" ]; then
-    echo "Don't sort events" 
+    echo "Don't sort events"
 else
     python3 sort_events.py
 fi
 
-if [ -z "$TF_NAME" ]; then 
+if [ -z "$TF_NAME" ]; then
     echo "Don't replace kernels name with TF ops"
 else
     python3 retrieve_tf_op_name.py
-fi 
+fi
 
 python3 vtid.py

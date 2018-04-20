@@ -1,5 +1,19 @@
 import os
-out_path = os.getcwd() + "/../results"
+import argparse
+
+
+# parse argument to get the program name and path
+parser = argparse.ArgumentParser(description="Fix a missing '_'")
+parser.add_argument("--trace", help="set the trace")
+args = parser.parse_args()
+
+# Set the input traces
+if args.trace == None:
+    out_path = os.getcwd() + "/../results"
+else:
+    out_path = args.trace
+
+
 out_metadata = []
 with open(out_path + "/metadata", "r") as f:
     lines = f.readlines()

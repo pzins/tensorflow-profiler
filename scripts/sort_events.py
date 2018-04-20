@@ -3,7 +3,6 @@ import babeltrace
 import babeltrace.reader as btr
 import babeltrace.writer as btw
 import sys
-from tracing_events_classes import event_classes
 from collections import defaultdict
 import time
 import os
@@ -11,7 +10,6 @@ from collections import defaultdict
 import argparse
 from utils import debugPrint
 
-debugPrint("SORT EVENTS")
 
 
 
@@ -22,6 +20,7 @@ parser.add_argument("--output_trace", help="set the output trace destination")
 parser.add_argument("--parse_kernel_log", help="hc log file to get gpu kernels informations")
 args = parser.parse_args()
 
+debugPrint("SORT EVENTS")
 # Add the input trace to the collection
 collection = btr.TraceCollection()
 
@@ -37,9 +36,9 @@ collection.add_trace(path + "/ust/uid/1000/64-bit", 'ctf')
 
 # Set the output trace
 if args.output_trace == None:
-    out_path = "/tmp/out_traces"
-else:       
-    out_path = args.output_trace        
+    out_path = "/tmp/tensorflow-profiler"
+else:
+    out_path = args.output_trace
 if not os.path.isdir(out_path):
     os.system("mkdir " + out_path)
 writer = btw.Writer(out_path)
@@ -71,6 +70,8 @@ writer.add_environment_field("tracer_minor", 7)
 main_stream_class = btw.StreamClass('main_stream')
 main_stream_class.clock = clock
 
+
+from tracing_events_classes import event_classes
 # Create stream
 for event_class in event_classes.values():
     main_stream_class.add_event_class(event_class)
