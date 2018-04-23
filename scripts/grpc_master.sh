@@ -20,14 +20,9 @@ while true; do
 done
 
 # define some variables
-if [ -z "${other_computer_ip}" ]
+if [ -z "${other_computer_ip}" ] || [ -z "${tf_program_name}" ]
 then
-    other_computer_ip="192.168.1.5"
-    other_computer_ip="132.207.72.31"
-fi
-if [ -z "${tf_program_name}" ]
-then
-    tf_program_name="cnn_distributed.py"
+    usage
 fi
 scripts_dir=`pwd`
 
@@ -38,7 +33,8 @@ bash set_env.sh --hip --hc 2
 bash start_tracing.sh -g
 
 # go to TensorFlow script and start the program
-cd /home/pierre/Dropbox/dev/distributed/in_model_parallelism/
+tf_program_dir=`dirname "$tf_program_name"`
+cd $tf_program_dir
 python3 $tf_program_name m
 # python3 $tf_program_name m > /dev/null 2>&1
 

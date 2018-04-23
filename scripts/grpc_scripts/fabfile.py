@@ -15,7 +15,9 @@ def startTracing(tf_file, ip_m, ip_w):
         run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_worker.sh -f " + tf_file + " -i " + ip_m)
 
 @task
-def main(tf_file="cnn_distributed.py", ip_m="132.207.72.22", ip_w="132.207.72.31"):
+def main(tf_file="/home/pierre/Dropbox/dev/distributed/in_model_parallelism/cnn_distributed.py",
+         ip_m="132.207.72.22",
+         ip_w="132.207.72.31"):
     
     _HOSTS = [ ip_m, ip_w ] 
     with settings(password="pierreol"):
