@@ -75,8 +75,9 @@ $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --su
 
 $is_sudo lttng enable-event --userspace "cuptiTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hsa_runtime:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "eigenTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hsaTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "hccTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "hcTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
 
 $is_sudo lttng enable-event --userspace "tensorflowTracer:*" --channel=ustchannel
