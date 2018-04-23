@@ -8,9 +8,9 @@ from fabric.context_managers import cd, env
 @parallel
 def startTracing(tf_file, ip_m, ip_w):
     if env.host == ip_m:
-        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_master.sh -f " + tf_file + " -i " + ip_w)
+        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_master.sh ")
     if env.host == ip_w:
-        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_worker.sh -f " + tf_file + " -i " + ip_m)
+        run("cd ~/dev/tensorflow-profiler/scripts/ ; bash grpc_worker.sh ")
 
 
 @task
