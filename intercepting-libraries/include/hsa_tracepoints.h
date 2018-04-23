@@ -1,5 +1,5 @@
 #undef TRACEPOINT_PROVIDER
-#define TRACEPOINT_PROVIDER hsa_runtime
+#define TRACEPOINT_PROVIDER interceptionTracer
 
 #undef TRACEPOINT_INCLUDE
 #define TRACEPOINT_INCLUDE "./hsa_tracepoints.h"
@@ -11,7 +11,7 @@
 #include <GPUPerfAPI-HSA.h>
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	runtime_initialized,
 	TP_ARGS(
 		const char*, cat_arg
@@ -22,7 +22,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	runtime_shut_down,
 	TP_ARGS(
 		const char*, cat_arg
@@ -35,7 +35,7 @@ TRACEPOINT_EVENT(
 /* call_stack */
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	function_entry,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -48,7 +48,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	function_exit,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -63,7 +63,7 @@ TRACEPOINT_EVENT(
 /* queue_profiling */
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	queue_created,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -78,7 +78,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	queue_destroyed,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -91,7 +91,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	aql_packet_submitted,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -110,7 +110,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	aql_kernel_dispatch_packet_submitted,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -133,8 +133,8 @@ TRACEPOINT_EVENT(
 /* kernel_times */
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
-	kernel_start_nm,
+	interceptionTracer,
+	kernel_begin,
 	TP_ARGS(
 		const char*, cat_arg,
 		uint64_t, kernel_object,
@@ -154,8 +154,8 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
-	kernel_end_nm,
+	interceptionTracer,
+	kernel_end,
 	TP_ARGS(
 		const char*, cat_arg,
 		uint64_t, kernel_object,
@@ -177,7 +177,7 @@ TRACEPOINT_EVENT(
 /* perf_counters */
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	perf_counter_uint32,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -196,7 +196,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	perf_counter_uint64,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -215,7 +215,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	perf_counter_float32,
 	TP_ARGS(
 		const char*, cat_arg,
@@ -234,7 +234,7 @@ TRACEPOINT_EVENT(
 )
 
 TRACEPOINT_EVENT(
-	hsa_runtime,
+	interceptionTracer,
 	perf_counter_float64,
 	TP_ARGS(
 		const char*, cat_arg,

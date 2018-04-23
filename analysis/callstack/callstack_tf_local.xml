@@ -134,12 +134,12 @@
 
 			<fsm id="call_stack_hcc_kernels_log" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="hcc*kernel2_begin" target="loop" action="entering_thread:push_event_type_tf"/>
+					<transition event="hcc*kernel_log_begin" target="loop" action="entering_thread:push_event_type_tf"/>
 				</state>
 				<state id="loop">
-					<transition event="hcc*kernel2_begin" cond="name_name" target="loop" action="push_event_type_tf" />
-					<transition event="hcc*kernel2_end" cond="name_name:last_out" target="end_thread" action="pop_event_type_tf"/>
-					<transition event="hcc*kernel2_end" cond="name_name" target="loop" action="pop_event_type_tf" />
+					<transition event="hcc*kernel_log_begin" cond="name_name" target="loop" action="push_event_type_tf" />
+					<transition event="hcc*kernel_log_end" cond="name_name:last_out" target="end_thread" action="pop_event_type_tf"/>
+					<transition event="hcc*kernel_log_end" cond="name_name" target="loop" action="pop_event_type_tf" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
@@ -148,12 +148,12 @@
 
 			<fsm id="call_stack_intercept_kernel" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="hsa_runtime:kernel_start_nm" target="loop" action="entering_thread:push_event_type"/>
+					<transition event="interceptionTracer:kernel_begin" target="loop" action="entering_thread:push_event_type"/>
 				</state>
 				<state id="loop">
-					<transition event="hsa_runtime:kernel_start_nm" cond="name_name" target="loop" action="push_event_type" />
-					<transition event="hsa_runtime:kernel_end_nm" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
-					<transition event="hsa_runtime:kernel_end_nm" cond="name_name" target="loop" action="pop_event_type" />
+					<transition event="interceptionTracer:kernel_begin" cond="name_name" target="loop" action="push_event_type" />
+					<transition event="interceptionTracer:kernel_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
+					<transition event="interceptionTracer:kernel_end" cond="name_name" target="loop" action="pop_event_type" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>

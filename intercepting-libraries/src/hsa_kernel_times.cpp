@@ -17,8 +17,8 @@ void gather_kernel_times()
         for (int i = 0; i < count; i++) {
             record = records[i];
             name = symbol_names[kernel_object_symbols[record.kernel]];
-            tracepoint(hsa_runtime, kernel_start_nm, "kernels_paul", record.kernel, name.c_str(), record.agent.handle, record.queue->id, record.time.start - init_timestamp);
-            tracepoint(hsa_runtime, kernel_end_nm, "kernels_paul", record.kernel, name.c_str(), record.agent.handle, record.queue->id, record.time.end - init_timestamp);
+            tracepoint(interceptionTracer, kernel_begin, "kernels_paul", record.kernel, name.c_str(), record.agent.handle, record.queue->id, record.time.start - init_timestamp);
+            tracepoint(interceptionTracer, kernel_end, "kernels_paul", record.kernel, name.c_str(), record.agent.handle, record.queue->id, record.time.end - init_timestamp);
         }
         delete[] records;
     }

@@ -79,22 +79,22 @@ void read_gpa_counters(gpa_uint32 session_id)
                     if (type == GPA_TYPE_UINT32) {
                         gpa_uint32 value;
                         GPA_GetSampleUInt32(session_id, sample, enabled_counter_index, &value);
-                        tracepoint(hsa_runtime, perf_counter_uint32, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
+                        tracepoint(interceptionTracer, perf_counter_uint32, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
                     }
                     else if (type == GPA_TYPE_UINT64) {
                         gpa_uint64 value;
                         GPA_GetSampleUInt64(session_id, sample, enabled_counter_index, &value);
-                        tracepoint(hsa_runtime, perf_counter_uint64, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
+                        tracepoint(interceptionTracer, perf_counter_uint64, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
                     }
                     else if (type == GPA_TYPE_FLOAT32) {
                         gpa_float32 value;
                         GPA_GetSampleFloat32(session_id, sample, enabled_counter_index, &value);
-                        tracepoint(hsa_runtime, perf_counter_float32, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
+                        tracepoint(interceptionTracer, perf_counter_float32, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
                     }
                     else if (type == GPA_TYPE_FLOAT64) {
                         gpa_float64 value;
                         GPA_GetSampleFloat64(session_id, sample, enabled_counter_index, &value);
-                        tracepoint(hsa_runtime, perf_counter_float64, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
+                        tracepoint(interceptionTracer, perf_counter_float64, "perf_counters", session_kernel_objects[session_id], enabled_counter_index, counter_name, value);
                     }
                     else
                         assert(false);

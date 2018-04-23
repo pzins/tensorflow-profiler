@@ -45,11 +45,11 @@ end_regex = re.compile(end_event)
 # regex to collect tf op corresponding to a kernel launch command
 hip_kernel1_regex = re.compile("hipTracer:function_entry")
 hip_kernel2_regex = re.compile(".*hipLaunchKernel.*")
-hsa_runtime_aql_regex = re.compile("hsa_runtime:aql_kernel_dispatch_packet_submitted")
+interceptionTracer_aql_regex = re.compile("interceptionTracer:aql_kernel_dispatch_packet_submitted")
 
-hcc_runtime_regex_1 = re.compile("hcTracer:kernel2_begin")
+hcc_runtime_regex_1 = re.compile("hcTracer:kernel_log_begin")
 hcc_runtime_regex_2 = re.compile("hcTracer:kernel_begin")
-hsa_runtime_regex = re.compile("hsa_runtime:kernel_start_nm")
+interceptionTracer_regex = re.compile("interceptionTracer:kernel_begin")
 
 
 
@@ -91,7 +91,7 @@ for r_event in collection.events:
 
 
     # add a new kernel launch command
-    if (re.match(hip_kernel1_regex, name) and re.match(hip_kernel2_regex, r_event["name"])) or re.match(hsa_runtime_aql_regex, name):
+    if (re.match(hip_kernel1_regex, name) and re.match(hip_kernel2_regex, r_event["name"])) or re.match(interceptionTracer_aql_regex, name):
 
         # if there is an active tf operation, we add it in the list. Otherwise, just add None
         # print(len(open_state))
@@ -188,8 +188,8 @@ for r_event in collection.events:
             continue
 
         # if we have a kernel: change a field value (tf_name or name depending on the event) with the corresponding tf op
-        if (f == "tf_name" and (re.match(hcc_runtime_regex_1, name) or re.match(hsa_runtime_regex, name)) and "Memset" not in r_event["name"]) or \
-           (f == "name" and re.match(hsa_runtime_regex, name) and "Memset" not in r_event["name"]):# and r_event["name"] == ""):
+        if (f == "tf_name" and (re.match(hcc_runtime_regex_1, name) or re.match(interceptionTracer_regex, name)) and "Memset" not in r_event["name"]) or \
+           (f == "name" and re.match(interceptionTracer_regex, name) and "Memset" not in r_event["name"]):# and r_event["name"] == ""):
             if list_tf_op[cnt_kernel] != None:
                 # print(list_tf_op[cnt_kernel].begin_event["name"])
                 w_event.payload(f).value = list_tf_op[cnt_kernel].begin_event["name"]
