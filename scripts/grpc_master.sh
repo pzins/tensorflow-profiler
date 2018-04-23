@@ -34,17 +34,21 @@ bash start_tracing.sh -g
 
 bash set_env.sh --hip --hc 1
 cd /home/pierre/Dropbox/dev/distributed/in_model_parallelism/
-python3 $tf_program_name m
-# python3 $tf_program_name m > /dev/null 2>&1
-
-res=`ssh "$other_computer_ip" ps -aux | grep cnn_distributed | grep -v grep | awk '{print $2}'`
-ssh $other_computer_ip kill -SIGKILL $res
+# python3 $tf_program_name m
+python3 $tf_program_name m > /dev/null 2>&1
+echo OL
+res=`ssh "$other_computer_ip" ps -aux | grep cnn_distributed | grep -v grep | grep python3 | awk '{print $2}'`
+echo $res
+ssh "$other_computer_ip" kill -SIGKILL "$res"
+echo OL
+# 
+# res=`ssh "$other_computer_ip" ps -aux | grep cnn_distributed | grep -v grep | awk '{print $2}'`
 
 cd $scripts_dir
 bash stop_tracing.sh -k
 bash post_process.sh -s -t
 
-mkdir traces_grpc
+# mkdir traces_grpc
 cp -r ../results ~/traces_grpc
 kernel_traces=`ls -t ../lttng-traces | head -1`
 cp -r ../lttng-traces/$kernel_traces ~/traces_grpc

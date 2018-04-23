@@ -21,7 +21,7 @@ done
 if [ -z "${other_computer_ip}" ]
 then
     other_computer_ip="192.168.1.5"
-    other_computer_ip="132.207.72.31"
+    other_computer_ip="132.207.72.22"
 fi
 if [ -z "${tf_program_name}" ]
 then
