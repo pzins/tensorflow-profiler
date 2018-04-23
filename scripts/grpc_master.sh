@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# parse arguments
 usage()
 {
     echo "Usage: $0 [-f | --file] [-i | --ip]
@@ -18,6 +19,7 @@ while true; do
     esac
 done
 
+# define some variables
 if [ -z "${other_computer_ip}" ]
 then
     other_computer_ip="192.168.1.5"
@@ -27,28 +29,33 @@ if [ -z "${tf_program_name}" ]
 then
     tf_program_name="cnn_distributed.py"
 fi
-
 scripts_dir=`pwd`
 
+# set the environment
+bash set_env.sh --hip --hc 1
+
+# start tracing
 bash start_tracing.sh -g
 
-bash set_env.sh --hip --hc 1
+# go to TensorFlow script and start the program
 cd /home/pierre/Dropbox/dev/distributed/in_model_parallelism/
-# python3 $tf_program_name m
-python3 $tf_program_name m > /dev/null 2>&1
-echo OL
-res=`ssh "$other_computer_ip" ps -aux | grep cnn_distributed | grep -v grep | grep python3 | awk '{print $2}'`
-echo $res
-ssh "$other_computer_ip" kill -SIGKILL "$res"
-echo OL
-# 
-# res=`ssh "$other_computer_ip" ps -aux | grep cnn_distributed | grep -v grep | awk '{print $2}'`
+python3 $tf_program_name m
+# python3 $tf_program_name m > /dev/null 2>&1
 
+# get the pid of the python script on the worker and kill it
+# because for now TensorFlow server cannot be stopped
+res=`ssh "$other_computer_ip" ps -aux | grep $tf_program_name | grep -v grep | grep python3 | awk '{print $2}'`
+ssh "$other_computer_ip" kill -SIGKILL "$res"
+
+# go to scripts directory
 cd $scripts_dir
+# stop tracing
 bash stop_tracing.sh -k
+# post process trace
 bash post_process.sh -s -t
 
-# mkdir traces_grpc
+# create the result folder and copy kernel and post processed UST traces in it
+mkdir traces_grpc
 cp -r ../results ~/traces_grpc
 kernel_traces=`ls -t ../lttng-traces | head -1`
 cp -r ../lttng-traces/$kernel_traces ~/traces_grpc
