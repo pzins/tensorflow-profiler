@@ -32,7 +32,7 @@ fi
 scripts_dir=`pwd`
 
 # set the environment
-bash set_env.sh --hip --hc 1
+bash set_env.sh --hip --hc 2
 
 # start tracing
 bash start_tracing.sh -g

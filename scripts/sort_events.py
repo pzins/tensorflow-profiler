@@ -17,7 +17,7 @@ from utils import debugPrint
 parser = argparse.ArgumentParser(description="Sort events")
 parser.add_argument("--input_trace", help="set the input trace")
 parser.add_argument("--output_trace", help="set the output trace destination")
-parser.add_argument("--parse_kernel_log", help="hc log file to get gpu kernels informations")
+parser.add_argument("--gpu_log", help="log file created by HC with GPU information (kernels, barriers, memcpy)")
 args = parser.parse_args()
 
 debugPrint("SORT EVENTS")
@@ -153,12 +153,12 @@ for r_event in collection.events:
     events[event_time].append([w_event, threadId])
 
 
-if args.parse_kernel_log != None:
+if args.gpu_log != None:
     debugPrint("PARSE KERNELS LOGS")
     hc_kernels = []
     hc_copy = []
     hc_barrier = []
-    with open(args.parse_kernel_log, "r") as f:
+    with open(args.gpu_log, "r") as f:
         lines = f.readlines()
         for l in lines:
             if l[:7] == "profile":
