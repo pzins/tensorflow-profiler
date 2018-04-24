@@ -13,35 +13,35 @@
 <tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="xmlDefinition.xsd">
 
-	<xyView id="tensorflow.async_memcpy">
+	<xyView id="tensorflow.stream_memcpy">
 		<head>
-			<analysis id="async_memcpy" />
-			<label value="Async Memory Copy" />
+			<analysis id="stream_memcpy" />
+			<label value="Stream Memory Copy" />
 		</head>
 
-		<entry path="Allocations/*" displayType="absolute"> 
+		<entry path="Copies/*" displayType="absolute"> 
 			<display type="self" />
 		</entry>
 	</xyView>
 
-	<stateProvider id="async_memcpy" version="1">
+	<stateProvider id="stream_memcpy" version="1">
 		<head>
 			<traceType id="org.eclipse.linuxtools.lttng2.ust.tracetype" />
-			<label value="Async Memory Copy" />
+			<label value="Stream Memory Copy" />
 		</head>
 
 		<!-- case 1 : exit_syscall : Fields: int64 ret -->
-		<eventHandler eventName="hcTracer:async_memcpy*begin">
+		<eventHandler eventName="streamTracer:memcpy_start">
 			<stateChange>
-				<stateAttribute type="constant" value="Allocations" />
-				<stateAttribute type="constant" value="size_bytes" />
-				<stateValue type="eventField" value="size_bytes" increment="false" />
+				<stateAttribute type="constant" value="Copies" />
+				<stateAttribute type="constant" value="size" />
+				<stateValue type="eventField" value="size" increment="false" />
 			</stateChange>
 		</eventHandler>
-		<eventHandler eventName="hcTracer:async_memcpy*end">
+		<eventHandler eventName="streamTracer:memcpy_end">
 			<stateChange>
-				<stateAttribute type="constant" value="Allocations" />
-				<stateAttribute type="constant" value="size_bytes" />
+				<stateAttribute type="constant" value="Copies" />
+				<stateAttribute type="constant" value="size" />
 				<stateValue type="eventField" value="0" increment="false" />
 			</stateChange>
 		</eventHandler>

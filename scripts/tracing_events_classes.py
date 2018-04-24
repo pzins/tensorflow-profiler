@@ -206,6 +206,7 @@ event_classes['grpcTracer:send_request_tensor_end'].add_field(string_fd, 'rendez
 event_classes['streamTracer:memcpy_start'] = btw.EventClass('streamTracer:memcpy_start')
 event_classes['streamTracer:memcpy_start'].add_field(string_fd, 'cat')
 event_classes['streamTracer:memcpy_start'].add_field(string_fd, 'name')
+event_classes['streamTracer:memcpy_start'].add_field(uint64_fd, 'size')
 
 event_classes['streamTracer:memcpy_end'] = btw.EventClass('streamTracer:memcpy_end')
 event_classes['streamTracer:memcpy_end'].add_field(string_fd, 'cat')
@@ -274,9 +275,6 @@ event_classes['hcTracer:async_memcpy_log_end'] = btw.EventClass('hcTracer:async_
 event_classes['hcTracer:async_memcpy_log_end'].add_field(string_fd, 'cat')
 event_classes['hcTracer:async_memcpy_log_end'].add_field(uint64_fd, 'timestamp')
 event_classes['hcTracer:async_memcpy_log_end'].add_field(string_fd, 'name')
-event_classes['hcTracer:async_memcpy_log_end'].add_field(int64_fd, 'size_bytes')
-event_classes['hcTracer:async_memcpy_log_end'].add_field(float_fd, 'size_megabytes')
-event_classes['hcTracer:async_memcpy_log_end'].add_field(float_fd, 'throughput')
 
 event_classes['hcTracer:async_memcpyslo_log_begin'] = btw.EventClass('hcTracer:async_memcpyslo_log_begin')
 event_classes['hcTracer:async_memcpyslo_log_begin'].add_field(string_fd, 'cat')
@@ -290,9 +288,6 @@ event_classes['hcTracer:async_memcpyslo_log_end'] = btw.EventClass('hcTracer:asy
 event_classes['hcTracer:async_memcpyslo_log_end'].add_field(string_fd, 'cat')
 event_classes['hcTracer:async_memcpyslo_log_end'].add_field(uint64_fd, 'timestamp')
 event_classes['hcTracer:async_memcpyslo_log_end'].add_field(string_fd, 'name')
-event_classes['hcTracer:async_memcpyslo_log_end'].add_field(int64_fd, 'size_bytes')
-event_classes['hcTracer:async_memcpyslo_log_end'].add_field(float_fd, 'size_megabytes')
-event_classes['hcTracer:async_memcpyslo_log_end'].add_field(float_fd, 'throughput')
 
 
 event_classes['hcTracer:unpinned_memory_engine_copy_entry'] = btw.EventClass('hcTracer:unpinned_memory_engine_copy_entry')
@@ -321,13 +316,6 @@ event_classes['hcTracer:async_memcpy_end'] = btw.EventClass('hcTracer:async_memc
 event_classes['hcTracer:async_memcpy_end'].add_field(string_fd, 'cat')
 event_classes['hcTracer:async_memcpy_end'].add_field(uint64_fd, 'timestamp')
 event_classes['hcTracer:async_memcpy_end'].add_field(string_fd, 'name')
-event_classes['hcTracer:async_memcpy_end'].add_field(int64_fd, 'size_bytes')
-event_classes['hcTracer:async_memcpy_end'].add_field(float_fd, 'size_megabytes')
-event_classes['hcTracer:async_memcpy_end'].add_field(float_fd, 'throughput')
-event_classes['hcTracer:async_memcpy_end'].add_field(uint32_fd, 'isAsync')
-event_classes['hcTracer:async_memcpy_end'].add_field(uint32_fd, 'isSingleStepCopy')
-event_classes['hcTracer:async_memcpy_end'].add_field(uint32_fd, 'isPeerToPeer')
-event_classes['hcTracer:async_memcpy_end'].add_field(uint32_fd, 'isActiveWait')
 
 event_classes['hcTracer:async_memcpyslo_begin'] = btw.EventClass('hcTracer:async_memcpyslo_begin')
 event_classes['hcTracer:async_memcpyslo_begin'].add_field(string_fd, 'cat')
@@ -345,13 +333,6 @@ event_classes['hcTracer:async_memcpyslo_end'] = btw.EventClass('hcTracer:async_m
 event_classes['hcTracer:async_memcpyslo_end'].add_field(string_fd, 'cat')
 event_classes['hcTracer:async_memcpyslo_end'].add_field(uint64_fd, 'timestamp')
 event_classes['hcTracer:async_memcpyslo_end'].add_field(string_fd, 'name')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(int64_fd, 'size_bytes')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(float_fd, 'size_megabytes')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(float_fd, 'throughput')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(uint32_fd, 'isAsync')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(uint32_fd, 'isSingleStepCopy')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(uint32_fd, 'isPeerToPeer')
-event_classes['hcTracer:async_memcpyslo_end'].add_field(uint32_fd, 'isActiveWait')
 
 event_classes['hcTracer:barrier_begin'] = btw.EventClass('hcTracer:barrier_begin')
 event_classes['hcTracer:barrier_begin'].add_field(string_fd, 'cat')

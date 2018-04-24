@@ -101,26 +101,12 @@ TRACEPOINT_EVENT(
     TP_ARGS(
         const char*, cat_arg,
         uint64_t, timestamp_arg,
-        const char*, name_arg,
-        int64_t, size_bytes_arg,
-        float, size_megabytes_arg,
-        float, throughput_arg,
-        uint32_t, isAsync_arg,
-        uint32_t, isSingleStepCopy_arg,
-        uint32_t, isPeerToPeer_arg,
-        uint32_t, isActiveWait_arg
+        const char*, name_arg
     ),
     TP_FIELDS(
         ctf_string(cat, cat_arg)
         ctf_integer(uint64_t, timestamp, timestamp_arg)
         ctf_string(name, name_arg)
-        ctf_integer(int64_t, size_bytes, size_bytes_arg)
-        ctf_float(float, size_megabytes, size_megabytes_arg)
-        ctf_float(double, throughput, throughput_arg)
-        ctf_integer(uint32_t, isAsync, isAsync_arg)
-        ctf_integer(uint32_t, isSingleStepCopy, isSingleStepCopy_arg)
-        ctf_integer(uint32_t, isPeerToPeer, isPeerToPeer_arg)
-        ctf_integer(uint32_t, isActiveWait, isActiveWait_arg)
     )
 )
 
@@ -158,26 +144,12 @@ TRACEPOINT_EVENT(
     TP_ARGS(
         const char*, cat_arg,
         uint64_t, timestamp_arg,
-        const char*, name_arg,
-        int, size_bytes_arg,
-        float, size_megabytes_arg,
-        float, throughput_arg,
-        uint32_t, isAsync_arg,
-        uint32_t, isSingleStepCopy_arg,
-        uint32_t, isPeerToPeer_arg,
-        uint32_t, isActiveWait_arg
+        const char*, name_arg
     ),
     TP_FIELDS(
         ctf_string(cat, cat_arg)
         ctf_integer(uint64_t, timestamp, timestamp_arg)
         ctf_string(name, name_arg)
-        ctf_integer(int, size_bytes, size_bytes_arg)
-        ctf_float(float, size_megabytes, size_megabytes_arg)
-        ctf_float(double, throughput, throughput_arg)
-        ctf_integer(uint32_t, isAsync, isAsync_arg)
-        ctf_integer(uint32_t, isSingleStepCopy, isSingleStepCopy_arg)
-        ctf_integer(uint32_t, isPeerToPeer, isPeerToPeer_arg)
-        ctf_integer(uint32_t, isActiveWait, isActiveWait_arg)
     )
 )
 

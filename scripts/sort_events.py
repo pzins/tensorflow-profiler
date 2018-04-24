@@ -234,9 +234,6 @@ if args.gpu_log != None:
         w_event_end.payload("cat").value = "hcc_copy"
         w_event_end.payload("name").value = i[1]
         w_event_end.payload("timestamp").value = i[4]
-        w_event_end.payload("size_bytes").value = i[5]
-        w_event_end.payload("size_megabytes").value = i[6]
-        w_event_end.payload("throughput").value = i[7]
         events[i[4]].append([w_event_end, threadId])
 
 # Append events to the stream
