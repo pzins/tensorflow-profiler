@@ -3,16 +3,16 @@ usage()
 {
     echo "Usage: $0 [-f | --file] [-h | --hc]
             where:
-                -f | --file       : tensorflow script name
-                -h | --hc=[1-3]   : 1 = set HSA_TOOLS_LIB and LD_PRELOAD environment variables
-                                    2 = set HCC_PROFILE environment variable : use HC instrumentation
+                -f | --file     : tensorflow script name
+                --hc=[1-3]      :   1 = set HSA_TOOLS_LIB and LD_PRELOAD environment variables
+                                    2 = set HCC_PROFILE environment variable : use HC instrumentation (default)
                                     3 = set HCC_PROFILE environment variable : use HC logs file
 " 1>&2; exit 1; }
 
 while true; do
     case "$1" in
         -f | --file ) tf_program_name="$2"; shift 2;;
-        -h | --hc ) hc="$2"; shift 2;;
+        --hc ) hc="$2"; shift 2;;
         -h | --help ) usage; shift;;
         -- ) shift; break ;;
         * ) break ;;
@@ -34,7 +34,7 @@ cd scripts
 scripts_dir=`pwd`
 
 # set environment
-source set_env.sh --hip --hc $hc
+# source set_env.sh --hip --hc $hc
 
 # start tracing
 bash start_tracing.sh 

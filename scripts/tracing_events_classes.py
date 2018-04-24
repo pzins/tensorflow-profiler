@@ -203,29 +203,13 @@ event_classes['grpcTracer:send_request_tensor_end'].add_field(string_fd, 'rendez
 
 
 # streamTracer
-event_classes['streamTracer:stream_then_memcpy_host_to_device_start'] = btw.EventClass('streamTracer:stream_then_memcpy_host_to_device_start')
-event_classes['streamTracer:stream_then_memcpy_host_to_device_start'].add_field(string_fd, 'cat')
-event_classes['streamTracer:stream_then_memcpy_host_to_device_start'].add_field(string_fd, 'name')
+event_classes['streamTracer:memcpy_start'] = btw.EventClass('streamTracer:memcpy_start')
+event_classes['streamTracer:memcpy_start'].add_field(string_fd, 'cat')
+event_classes['streamTracer:memcpy_start'].add_field(string_fd, 'name')
 
-event_classes['streamTracer:stream_then_memcpy_host_to_device_end'] = btw.EventClass('streamTracer:stream_then_memcpy_host_to_device_end')
-event_classes['streamTracer:stream_then_memcpy_host_to_device_end'].add_field(string_fd, 'cat')
-event_classes['streamTracer:stream_then_memcpy_host_to_device_end'].add_field(string_fd, 'name')
-
-event_classes['streamTracer:stream_then_memcpy_device_to_host_start'] = btw.EventClass('streamTracer:stream_then_memcpy_device_to_host_start')
-event_classes['streamTracer:stream_then_memcpy_device_to_host_start'].add_field(string_fd, 'cat')
-event_classes['streamTracer:stream_then_memcpy_device_to_host_start'].add_field(string_fd, 'name')
-
-event_classes['streamTracer:stream_then_memcpy_device_to_host_end'] = btw.EventClass('streamTracer:stream_then_memcpy_device_to_host_end')
-event_classes['streamTracer:stream_then_memcpy_device_to_host_end'].add_field(string_fd, 'cat')
-event_classes['streamTracer:stream_then_memcpy_device_to_host_end'].add_field(string_fd, 'name')
-
-event_classes['streamTracer:stream_then_memcpy_device_to_device_start'] = btw.EventClass('streamTracer:stream_then_memcpy_device_to_device_start')
-event_classes['streamTracer:stream_then_memcpy_device_to_device_start'].add_field(string_fd, 'cat')
-event_classes['streamTracer:stream_then_memcpy_device_to_device_start'].add_field(string_fd, 'name')
-
-event_classes['streamTracer:stream_then_memcpy_device_to_device_end'] = btw.EventClass('streamTracer:stream_then_memcpy_device_to_device_end')
-event_classes['streamTracer:stream_then_memcpy_device_to_device_end'].add_field(string_fd, 'cat')
-event_classes['streamTracer:stream_then_memcpy_device_to_device_end'].add_field(string_fd, 'name')
+event_classes['streamTracer:memcpy_end'] = btw.EventClass('streamTracer:memcpy_end')
+event_classes['streamTracer:memcpy_end'].add_field(string_fd, 'cat')
+event_classes['streamTracer:memcpy_end'].add_field(string_fd, 'name')
 
 # hcTracer
 event_classes['hcTracer:kernel_begin'] = btw.EventClass('hcTracer:kernel_begin')

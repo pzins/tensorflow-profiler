@@ -44,7 +44,7 @@ done
 
 
 if [ -z "$HIP" ]; then HIP=false;fi 
-if [ -z "$HC" ]; then HC=1;fi 
+if [ -z "$HC" ]; then HC=2;fi 
 if [ -z "$HSA" ]; then HSA=1;fi
 
 # echo $HIP
@@ -67,6 +67,10 @@ then
     export HIP_PROFILE_API=2
 fi
 
+
+echo OL
+echo $HC
+echo OL
 if [ "$HC" == "1" ];
 then
     echo "HSA_TOOLS_LIB"
