@@ -188,8 +188,10 @@ for r_event in collection.events:
             continue
 
         # if we have a kernel: change a field value (tf_name or name depending on the event) with the corresponding tf op
-        if (f == "tf_name" and (re.match(hcc_runtime_regex_1, name) or re.match(interceptionTracer_regex, name)) and "Memset" not in r_event["name"]) or \
-           (f == "name" and re.match(interceptionTracer_regex, name) and "Memset" not in r_event["name"]):# and r_event["name"] == ""):
+        if (f == "tf_name" and (re.match(hcc_runtime_regex_1, name) or \
+            re.match(hcc_runtime_regex_2, name) or \
+            re.match(interceptionTracer_regex, name)) and \
+            "Memset" not in r_event["name"]):
             if list_tf_op[cnt_kernel] != None:
                 # print(list_tf_op[cnt_kernel].begin_event["name"])
                 w_event.payload(f).value = list_tf_op[cnt_kernel].begin_event["name"]

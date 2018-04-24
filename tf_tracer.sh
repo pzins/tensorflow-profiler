@@ -34,7 +34,7 @@ cd scripts
 scripts_dir=`pwd`
 
 # set environment
-# source set_env.sh --hip --hc $hc
+source set_env.sh --hip --hc $hc
 
 # start tracing
 bash start_tracing.sh 

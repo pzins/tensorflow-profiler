@@ -68,16 +68,13 @@ then
 fi
 
 
-echo OL
-echo $HC
-echo OL
 if [ "$HC" == "1" ];
 then
     echo "HSA_TOOLS_LIB"
     export HSA_TOOLS_LIB="libhsa-runtime-tools64.so.1"
     echo "LD_PRELOAD"
     scripts_dir=`pwd`
-    export LD_PRELOAD="$scripts_dir/../intercepting-libraries/lib/hsa_kernel_times.so"
+    export LD_PRELOAD="$scripts_dir/../interception-libraries/lib/hsa_kernel_times.so"
 else
     echo "HCC_PROFILE"
     export HCC_PROFILE=2

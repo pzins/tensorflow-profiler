@@ -139,6 +139,7 @@ TRACEPOINT_EVENT(
 		const char*, cat_arg,
 		uint64_t, kernel_object,
 		const char*, name,
+		const char*, tf_name,
 		uint64_t, agent_handle,
 		uint64_t, queue_id,
 		uint64_t, timestamp
@@ -147,6 +148,7 @@ TRACEPOINT_EVENT(
 		ctf_string(cat, cat_arg)
 		ctf_integer_hex(uint64_t, kernel_object, kernel_object)
 		ctf_string(name, name)
+		ctf_string(tf_name, tf_name)
 		ctf_integer_hex(uint64_t, agent_handle, agent_handle)
 		ctf_integer(uint64_t, queue_id, queue_id)
 		ctf_integer(uint64_t, timestamp, timestamp)
@@ -160,6 +162,7 @@ TRACEPOINT_EVENT(
 		const char*, cat_arg,
 		uint64_t, kernel_object,
 		const char*, name,
+		const char*, tf_name,
 		uint64_t, agent_handle,
 		uint64_t, queue_id,
 		uint64_t, timestamp
@@ -168,6 +171,7 @@ TRACEPOINT_EVENT(
 		ctf_string(cat, cat_arg)
 		ctf_integer_hex(uint64_t, kernel_object, kernel_object)
 		ctf_string(name, name)
+		ctf_string(tf_name, tf_name)
 		ctf_integer_hex(uint64_t, agent_handle, agent_handle)
 		ctf_integer(uint64_t, queue_id, queue_id)
 		ctf_integer(uint64_t, timestamp, timestamp)
