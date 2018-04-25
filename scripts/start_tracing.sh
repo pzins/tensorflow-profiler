@@ -73,7 +73,7 @@ if [ "${is_sudo}" == "sudo" ]; then
 fi
 $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --subbuf-size=${subbuff_size_ust}
 
-$is_sudo lttng enable-event --userspace "cuptiTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "cudaTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "interceptionTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "eigenTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hsaTracer:*" --channel=ustchannel

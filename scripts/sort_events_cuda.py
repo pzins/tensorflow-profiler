@@ -99,18 +99,18 @@ for r_event in collection.events:
         w_event.payload(f).value = r_event[f]
 
 
-    if "queue" not in name and ("cuptiTracer:kernel" in name or "cuptiTracer:memcpy" in name):
+    if "queue" not in name and ("cudaTracer:kernel" in name or "cudaTracer:memcpy" in name):
         event_time = r_event["timestamp"] * 1000
 
     # organize threads
     threadId = r_event.field_with_scope("vtid", babeltrace.common.CTFScope.STREAM_EVENT_CONTEXT)
 
-    if "cuptiTracer:runtime" in name:
+    if "cudaTracer:runtime" in name:
         w_event.payload("name").value = runtime_dic[r_event["name"]]
         event_time = r_event["timestamp"]
         threadId = int(str(r_event["threadId"])[-4:])
 
-    if "cuptiTracer:driver" in name:
+    if "cudaTracer:driver" in name:
         w_event.payload("name").value = driver_dic[r_event["name"]]
         event_time = r_event["timestamp"]
         threadId = int(str(r_event["threadId"])[-4:])

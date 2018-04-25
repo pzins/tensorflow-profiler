@@ -172,12 +172,12 @@
 
 			<fsm id="tgcall_stack8" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="cuptiTracer:*_begin" target="loop" action="entering_thread:push_event_type"/>
+					<transition event="cudaTracer:*_begin" target="loop" action="entering_thread:push_event_type"/>
 				</state>
 				<state id="loop">
-					<transition event="cuptiTracer:*_begin" cond="name_name" target="loop" action="push_event_type" />
-					<transition event="cuptiTracer:*_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
-					<transition event="cuptiTracer:*_end" cond="name_name" target="loop" action="pop_event_type" />
+					<transition event="cudaTracer:*_begin" cond="name_name" target="loop" action="push_event_type" />
+					<transition event="cudaTracer:*_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
+					<transition event="cudaTracer:*_end" cond="name_name" target="loop" action="pop_event_type" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
