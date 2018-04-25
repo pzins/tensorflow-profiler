@@ -9,9 +9,9 @@ SUBBUFF_SIZE_KERNEL=131072
 
 
 usage()
-{ 
+{
     echo "Usage: $0 [-k | --kernel] [-p | --python] [-g | --grpc] [---num_subbuff_ust <int>] [---subbuff_size_ust <int>] [---num_subbuff_kernel <int>] [---subbuff_size_kernel <int>]
-            
+
             where:
                 -k | --kernel           : activate kernel tracing
                 -p | --python           : activate python tracing
@@ -80,8 +80,23 @@ $is_sudo lttng enable-event --userspace "hsaTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hcTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
 
-$is_sudo lttng enable-event --userspace "tensorflowTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "streamTracer:*" --channel=ustchannel
+
+# TensorFlow enable events
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:process*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:inline_ready*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:push_succ*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:session*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:*operation*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:rdv*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_bins_stats" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate " --channel=ustchannel
+
+
 
 if [ "${grpc_tracing}" == "True" ]; then
     $is_sudo lttng enable-event --userspace "grpcTracer:*" --channel=ustchannel

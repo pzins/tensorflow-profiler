@@ -8,19 +8,53 @@ from collections import defaultdict
 import time
 import os
 from collections import defaultdict
+import argparse
 from cbid_cuda import correlation_cbid
+from utils import debugPrint
 
 
+
+# parse argument to get the program name and path
+parser = argparse.ArgumentParser(description="Sort events")
+parser.add_argument("--input_trace", help="set the input trace")
+parser.add_argument("--output_trace", help="set the output trace destination")
+parser.add_argument("--gpu_log", help="log file created by HC with GPU information (kernels, barriers, memcpy)")
+args = parser.parse_args()
+
+debugPrint("SORT EVENTS")
 # Add the input trace to the collection
 collection = btr.TraceCollection()
-directory = "/home/pierre/lttng-traces"
-path = max([os.path.join(directory,d) for d in os.listdir(directory)], key=os.path.getmtime)
 
+# Set the input traces
+if args.input_trace == None:
+    directory = os.getcwd() + "/../lttng-traces/"
+    path = max([os.path.join(directory,d) for d in os.listdir(directory)], key=os.path.getmtime)
+else:
+    path = args.input_trace
+if path[-1] == "/":
+    path = path[:-1]
 collection.add_trace(path + "/ust/uid/1000/64-bit", 'ctf')
 
 # Set the output trace
-out_path = "/home/pierre/out_traces"
+if args.output_trace == None:
+    out_path = "/tmp/tensorflow-profiler"
+else:
+    out_path = args.output_trace
+if not os.path.isdir(out_path):
+    os.system("mkdir " + out_path)
 writer = btw.Writer(out_path)
+
+
+
+# Clock
+clock_offset = 0
+metadata_file = path + "/ust/uid/1000/64-bit/metadata"
+with open(metadata_file, "r", errors='ignore') as f:
+    lines = f.readlines()
+    for l in lines:
+        if "offset = " in l:
+            clock_offset = int(l.split()[-1][:-1])
+
 
 clock = btw.Clock('monotonic')
 clock.description = 'Monotonic clock from AMD RCP'
@@ -65,7 +99,7 @@ for r_event in collection.events:
         w_event.payload(f).value = r_event[f]
 
 
-    if "cuptiTracer:kernel" in name or "cuptiTracer:memcpy" in name:
+    if "queue" not in name and ("cuptiTracer:kernel" in name or "cuptiTracer:memcpy" in name):
         event_time = r_event["timestamp"] * 1000
 
     # organize threads
@@ -92,6 +126,7 @@ for r_event in collection.events:
 timestamps = list(events.keys())
 timestamps.sort()
 
+debugPrint("WRITE TRACE")
 for timestamp in timestamps:
     clock.time = timestamp
     for i in range(len(events[timestamp])):
