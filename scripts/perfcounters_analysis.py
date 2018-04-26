@@ -7,21 +7,45 @@ import babeltrace
 import babeltrace.reader as btr
 import babeltrace.writer as btw
 import sys
-from tracing_events_classes import event_classes
-from collections import defaultdict
 import time
 import os
 from datetime import datetime
+import argparse
+
+# parse argument to get the program name and path
+parser = argparse.ArgumentParser(description="Combine perfcounters file from RCP and CTF traces")
+parser.add_argument("--ctf", help="set the input CTF trace", required=True)
+parser.add_argument("--rcp", help="set the input RCP file", required=True)
+parser.add_argument("--output", help="set the output csv file")
+args = parser.parse_args()
+
+
+from tracing_events_classes import event_classes
 from collections import defaultdict
-
-
 ctf_traces = []
 
-# Add the input trace to the collection
+if args.output == None:
+    output_file = "./perfcounters.csv"
+else:
+    output_file = args.output
+
+
+# Add the input CTF trace to the collection
 collection = btr.TraceCollection()
-directory = "/home/pierre/out_traces"
+directory = args.ctf
 collection.add_trace(directory, 'ctf')
-clock_offset = 1519939145097366944 # first computer
+
+# get clock offset
+clock_offset = 0
+directory = os.getcwd() + "/../lttng-traces/"
+path = max([os.path.join(directory,d) for d in os.listdir(directory)], key=os.path.getmtime)
+metadata_file = path + "/ust/uid/1000/64-bit/metadata"
+with open(metadata_file, "r", errors='ignore') as f:
+    lines = f.readlines()
+    for l in lines:
+        if "offset = " in l:
+            clock_offset = int(l.split()[-1][:-1])
+
 
 # get all the sessions time
 sessions_time = []
@@ -33,6 +57,7 @@ for r_event in collection.events:
     name = r_event.name
     if "hcTracer:kernel_begin" in name:
         tmp = str(r_event["timestamp"]+  clock_offset) + "|" + r_event["name"]
+        # tmp = str(r_event["timestamp"]) + "|" + r_event["name"]
         ctf_traces.append(tmp)
     if "tensorflowTracer:session_start" in name:
         if tmp_session_time != [0, 0]:
@@ -54,7 +79,7 @@ rcp_names = []
 counters = []
 
 # read lines from RCP file
-with open("/home/pierre/Session1.csv", "r") as f:
+with open(args.rcp, "r") as f:
     lines = f.readlines()
     # skip the first 10 lines which are not perf counters lines
     for line in lines[10:]:
@@ -154,6 +179,6 @@ for i in output_data[1:]:
         out.append("-1|-1|-1|" + i)
 
 # write the data to a csv file        
-with open("/home/pierre/perfcounters_test.csv", "w") as f:
+with open(output_file, "w") as f:
     f.writelines(out)
     # f.writelines(output_data)
