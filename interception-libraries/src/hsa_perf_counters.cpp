@@ -139,7 +139,6 @@ hsa_status_t HSA_API
   void *data),
   void *data, uint32_t private_segment_size,
   uint32_t group_segment_size, hsa_queue_t **queue){
-    printf("------\n");
     
     decltype(hsa_queue_create) *orig = (decltype(hsa_queue_create)*) dlsym(RTLD_NEXT, "hsa_queue_create");
     hsa_status_t retval = orig(agent, size, type, callback, data, private_segment_size, group_segment_size, queue);

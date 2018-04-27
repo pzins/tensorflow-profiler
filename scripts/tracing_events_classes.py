@@ -13,6 +13,9 @@ int64_fd.signed = True
 uint32_fd = btw.IntegerFieldDeclaration(32)
 uint32_fd.signed = False
 
+uint16_fd = btw.IntegerFieldDeclaration(16)
+uint16_fd.signed = False
+
 int32_fd = btw.IntegerFieldDeclaration(32)
 int32_fd.signed = True
 
@@ -24,7 +27,8 @@ huint64_fd.signed = False
 
 string_fd = btw.StringFieldDeclaration()
 
-dim_array_fd = btw.ArrayFieldDeclaration(uint32_fd, 3)
+dim_array32_fd = btw.ArrayFieldDeclaration(uint32_fd, 3)
+dim_array16_fd = btw.ArrayFieldDeclaration(uint16_fd, 3)
 # Create event classes
 event_classes = {}
 
@@ -76,6 +80,12 @@ event_classes['interceptionTracer:aql_kernel_dispatch_packet_submitted'].add_fie
 event_classes['interceptionTracer:aql_kernel_dispatch_packet_submitted'].add_field(uint64_fd, 'queue_id')
 event_classes['interceptionTracer:aql_kernel_dispatch_packet_submitted'].add_field(uint64_fd, 'kernel_object')
 event_classes['interceptionTracer:aql_kernel_dispatch_packet_submitted'].add_field(string_fd, 'kernel_name')
+
+event_classes['interceptionTracer:kernel_parameters'] = btw.EventClass('interceptionTracer:kernel_parameters')
+event_classes['interceptionTracer:kernel_parameters'].add_field(dim_array16_fd, 'workgroup_size')
+event_classes['interceptionTracer:kernel_parameters'].add_field(dim_array32_fd, 'grid_size')
+event_classes['interceptionTracer:kernel_parameters'].add_field(uint32_fd, 'static_group_segment_size')
+event_classes['interceptionTracer:kernel_parameters'].add_field(uint32_fd, 'private_segment_size')
 
 event_classes['interceptionTracer:perf_counter_uint32'] = btw.EventClass('interceptionTracer:perf_counter_uint32')
 event_classes['interceptionTracer:perf_counter_uint32'].add_field(string_fd, 'cat')
@@ -221,8 +231,8 @@ event_classes['hcTracer:kernel_begin'].add_field(uint64_fd, 'timestamp')
 event_classes['hcTracer:kernel_begin'].add_field(string_fd, 'name')
 event_classes['hcTracer:kernel_begin'].add_field(string_fd, 'long_name')
 event_classes['hcTracer:kernel_begin'].add_field(string_fd, 'tf_name')
-event_classes['hcTracer:kernel_begin'].add_field(dim_array_fd, 'workgroup_size')
-event_classes['hcTracer:kernel_begin'].add_field(dim_array_fd, 'grid_size')
+event_classes['hcTracer:kernel_begin'].add_field(dim_array16_fd, 'workgroup_size')
+event_classes['hcTracer:kernel_begin'].add_field(dim_array32_fd, 'grid_size')
 event_classes['hcTracer:kernel_begin'].add_field(uint32_fd, 'static_group_segment_size')
 event_classes['hcTracer:kernel_begin'].add_field(uint32_fd, 'private_segment_size')
 event_classes['hcTracer:kernel_begin'].add_field(uint32_fd, 'workitem_vgpr_count')
@@ -233,8 +243,8 @@ event_classes['hcTracer:kernel_end'].add_field(uint64_fd, 'timestamp')
 event_classes['hcTracer:kernel_end'].add_field(string_fd, 'name')
 event_classes['hcTracer:kernel_end'].add_field(string_fd, 'long_name')
 event_classes['hcTracer:kernel_end'].add_field(string_fd, 'tf_name')
-event_classes['hcTracer:kernel_end'].add_field(dim_array_fd, 'workgroup_size')
-event_classes['hcTracer:kernel_end'].add_field(dim_array_fd, 'grid_size')
+event_classes['hcTracer:kernel_end'].add_field(dim_array16_fd, 'workgroup_size')
+event_classes['hcTracer:kernel_end'].add_field(dim_array32_fd, 'grid_size')
 event_classes['hcTracer:kernel_end'].add_field(uint32_fd, 'static_group_segment_size')
 event_classes['hcTracer:kernel_end'].add_field(uint32_fd, 'private_segment_size')
 event_classes['hcTracer:kernel_end'].add_field(uint32_fd, 'workitem_vgpr_count')

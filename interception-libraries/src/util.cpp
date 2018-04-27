@@ -8,8 +8,6 @@ uint64_t mc_timestamp()
 {
     uint64_t timestamp;
     hsa_system_get_info(HSA_SYSTEM_INFO_TIMESTAMP, &timestamp);
-
-    std::cout << "22222222222222222222" << std::endl;
     return timestamp;
 }
 
