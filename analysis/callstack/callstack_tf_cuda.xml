@@ -4,11 +4,8 @@
 
 <callstack id="org.eclipse.tracecompass.incubator.example.tracecompass.grouped.threads">
     <callstackGroup name="Tensorflow Callstack">
-        <!-- <level path="call_stack/*" /> -->
 		<level path="Views/*" />
 		<level path="Threads/*"/>
-		<!-- <thread cpu="cpu" /> -->
-		<!-- <thread level="0"/> -->
     </callstackGroup>
 	<pattern version="0" id="tensorflow_cs_pattern">
 		<head>
@@ -64,7 +61,6 @@
 
 
 			<action id="entering_thread">
-				<!-- Initialize current scenario data: component, type of thread, queries and drawing event counts -->
 				<stateChange>
 					<stateAttribute type="constant" value="#CurrentScenario" />
 					<stateAttribute type="constant" value="threadID" />
@@ -98,7 +94,7 @@
 				</stateChange>
 			</action>
 
-			<fsm id="tgcall_stack" multiple="true" initial="Wait_thread_start">
+			<fsm id="call_stack_api" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="*_entry" target="loop" action="entering_thread:push_event_type"/>
 				</state>
@@ -110,31 +106,7 @@
 				<final id="end_thread"/>
 			</fsm>
 
-			<fsm id="tgcall_stack2" multiple="true" initial="Wait_thread_start">
-				<state id="Wait_thread_start">
-					<transition event="hcc*_begin" target="loop" action="entering_thread:push_event_type"/>
-				</state>
-				<state id="loop">
-					<transition event="hcc*_begin" cond="name_name" target="loop" action="push_event_type" />
-					<transition event="hcc*_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
-					<transition event="hcc*_end" cond="name_name" target="loop" action="pop_event_type" />
-				</state>
-				<final id="end_thread"/>
-			</fsm>
-
-			<fsm id="tgcall_stack20" multiple="true" initial="Wait_thread_start">
-				<state id="Wait_thread_start">
-					<transition event="interceptionTracer:kernel_begin" target="loop" action="entering_thread:push_event_type"/>
-				</state>
-				<state id="loop">
-					<transition event="interceptionTracer:kernel_begin" cond="name_name" target="loop" action="push_event_type" />
-					<transition event="interceptionTracer:kernel_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
-					<transition event="interceptionTracer:kernel_end" cond="name_name" target="loop" action="pop_event_type" />
-				</state>
-				<final id="end_thread"/>
-			</fsm>
-
-			<fsm id="tgcall_stack3" multiple="true" initial="Wait_thread_start">
+			<fsm id="call_stack_tf_session" multiple="true" initial="Wait_thread_start">
 			    <state id="Wait_thread_start">
 			        <transition event="tensorflowTracer:session_start" target="loop" action="entering_thread:push_event_type"/>
 			    </state>
@@ -146,7 +118,7 @@
 			    <final id="end_thread"/>
 			</fsm>
 
-			<fsm id="tgcall_stack4" multiple="true" initial="Wait_thread_start">
+			<fsm id="call_stack_tf_op" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="tensorflowTracer:operation_start" target="loop" action="entering_thread:push_event_type"/>
 				</state>
@@ -158,7 +130,7 @@
 				<final id="end_thread"/>
 			</fsm>
 
-			<fsm id="tgcall_stack5" multiple="true" initial="Wait_thread_start">
+			<fsm id="call_stack_tf_async_op" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="tensorflowTracer:async_operation_start" target="loop" action="entering_thread:push_event_type"/>
 				</state>
@@ -178,6 +150,28 @@
 					<transition event="cudaTracer:*_begin" cond="name_name" target="loop" action="push_event_type" />
 					<transition event="cudaTracer:*_end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
 					<transition event="cudaTracer:*_end" cond="name_name" target="loop" action="pop_event_type" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+			<fsm id="call_stack_rdv" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="tensorflowTracer:rdv_send" target="loop" action="entering_thread:push_event_type"/>
+				</state>
+				<state id="loop">
+					<transition event="tensorflowTracer:rdv_send" cond="async_name" target="loop" action="push_event_type"/>
+					<transition event="tensorflowTracer:rdv_recv" cond="async_name:last_out" target="end_thread" action="pop_event_type"/>
+					<transition event="tensorflowTracer:rdv_recv" cond="async_name" target="loop" action="pop_event_type"/>
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+			<fsm id="call_stack_stream" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="streamTracer:*start" target="loop" action="entering_thread:push_event_type"/>
+				</state>
+				<state id="loop">
+					<transition event="streamTracer:*start" cond="name_name" target="loop" action="push_event_type"/>
+					<transition event="streamTracer:*end" cond="name_name:last_out" target="end_thread" action="pop_event_type"/>
+					<transition event="streamTracer:*end" cond="name_name" target="loop" action="pop_event_type"/>
 				</state>
 				<final id="end_thread"/>
 			</fsm>

@@ -44,6 +44,7 @@ else
     python3 retrieve_tf_op_name.py
 fi
 
+# no need to retrieve tf op name so just copy the results of sorting script to the results folder
 if [ "$CUDA" == true ]
 then
     cp /tmp/tensorflow-profiler/* ../results/

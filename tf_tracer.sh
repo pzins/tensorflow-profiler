@@ -9,11 +9,13 @@ usage()
                                     3 = set HCC_PROFILE environment variable : use HC logs file
                 -q | --quiet    : quiet mode for TensorFlow application
                 -a | --args     : arguments to pass to TensorFlow application
+                --cuda          : cuda mode
 " 1>&2; exit 1; }
 
 while true; do
     case "$1" in
         -q | --quiet ) quiet_mode=true; shift ;;
+        --cuda ) cuda_mode=true; shift ;;
         -f | --file ) tf_program_name="$2"; shift 2;;
         -a | --args ) tf_program_args="$2"; shift 2;;
         --hc ) hc="$2"; shift 2;;
@@ -36,16 +38,24 @@ if [ -z "${tf_program_args}" ]
 then
     tf_program_args=""
 fi
+if [ "${cuda_mode}" == true ]
+then
+    quiet_mode=false
+    hc=0
+fi
 
 # get scripts directory
 cd scripts
 scripts_dir=`pwd`
 
-# set environment
-source set_env.sh --hip --hc $hc
+# set environment if not cuda mode
+if [ -z "${cuda_mode}" ]
+then
+    source set_env.sh --hip --hc $hc
+fi
 
 # start tracing
-bash start_tracing.sh 
+bash start_tracing.sh
 
 # go to TensorFlow script path
 tf_program_dir=`dirname "$tf_program_name"`
@@ -70,8 +80,13 @@ cd $scripts_dir
 bash stop_tracing.sh
 # post process trace
 if [ "${hc}" == "3" ]
-then 
+then
     bash post_process.sh -s -t -k /tmp/tensorflow-profiler-gpu-log.log
 else
-    bash post_process.sh -s -t
+    if [ "${cuda_mode}" == true ]
+    then
+        bash post_process.sh -s --cuda
+    else
+        bash post_process.sh -s -t
+    fi
 fi
