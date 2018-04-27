@@ -20,11 +20,11 @@
 				<stateAttribute type="constant" value="component" />
 			</stateAttribute>
 			<stateAttribute type="constant" value="Threads" />
-			<!-- <stateAttribute type="pool" /> -->
 			<stateAttribute type="query">
 				<stateAttribute type="constant" value="#CurrentScenario" />
 				<stateAttribute type="constant" value="threadID" />
 			</stateAttribute>
+			<!-- <stateAttribute type="pool" /> -->
 		</location>
 
 		<patternHandler>
@@ -247,16 +247,16 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-
+		
 			<!-- HC -->
 			<fsm id="call_stack_hc_memcpy" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="hc*memcpy*begin" target="loop" action="entering_thread:push_name"/>
 				</state>
 				<state id="loop">
-					<transition event="hc*memcpy*begin" cond="test_name" target="loop" action="push_name" />
-					<transition event="hc*memcpy*end" cond="test_name:last_out" target="end_thread" action="pop_name"/>
-					<transition event="hc*memcpy*end" cond="test_name" target="loop" action="pop_name" />
+					<transition event="hc*memcpy*begin" cond="test_category" target="loop" action="push_name" />
+					<transition event="hc*memcpy*end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
+					<transition event="hc*memcpy*end" cond="test_category" target="loop" action="pop_name" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
@@ -265,71 +265,105 @@
 					<transition event="hc*barrier*begin" target="loop" action="entering_thread:push_name"/>
 				</state>
 				<state id="loop">
-					<transition event="hc*barrier*begin" cond="test_name" target="loop" action="push_name" />
-					<transition event="hc*barrier*end" cond="test_name:last_out" target="end_thread" action="pop_name"/>
-					<transition event="hc*barrier*end" cond="test_name" target="loop" action="pop_name" />
+					<transition event="hc*barrier*begin" cond="test_category" target="loop" action="push_name" />
+					<transition event="hc*barrier*end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
+					<transition event="hc*barrier*end" cond="test_category" target="loop" action="pop_name" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
 			<fsm id="call_stack_hc_kernels" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="hcTracer:kernel_begin" target="loop" action="entering_thread:push_name:push_name_tf"/>
+					<transition event="hcTracer:kernel_begin" target="loop" action="entering_thread:push_name"/>
 				</state>
 				<state id="loop">
-					<transition event="hcTracer:kernel_begin" cond="test_name" target="loop" action="push_name:push_name_tf" />
-					<transition event="hcTracer:kernel_end" cond="test_name:last_out" target="end_thread" action="pop_name:pop_name_tf"/>
-					<transition event="hcTracer:kernel_end" cond="test_name" target="loop" action="pop_name:pop_name_tf" />
+					<transition event="hcTracer:kernel_begin" cond="test_category" target="loop" action="push_name" />
+					<transition event="hcTracer:kernel_end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
+					<transition event="hcTracer:kernel_end" cond="test_category" target="loop" action="pop_name" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
+			<fsm id="call_stack_hc_kernels_tfname" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="hcTracer:kernel_begin" target="loop" action="entering_thread:push_tf_name"/>
+				</state>
+				<state id="loop">
+					<transition event="hcTracer:kernel_begin" cond="test_category" target="loop" action="push_tf_name" />
+					<transition event="hcTracer:kernel_end" cond="test_category:last_out" target="end_thread" action="pop_tf_name"/>
+					<transition event="hcTracer:kernel_end" cond="test_category" target="loop" action="pop_tf_name" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+		
 			<fsm id="call_stack_hc_kernels_log" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="hcTracer:kernel_log_begin" target="loop" action="entering_thread:push_name:push_name_tf"/>
 				</state>
 				<state id="loop">
-					<transition event="hcTracer:kernel_log_begin" cond="test_name" target="loop" action="push_name:push_name_tf" />
-					<transition event="hcTracer:kernel_log_end" cond="test_name:last_out" target="end_thread" action="pop_name:pop_name_tf"/>
-					<transition event="hcTracer:kernel_log_end" cond="test_name" target="loop" action="pop_name:pop_name_tf" />
+					<transition event="hcTracer:kernel_log_begin" cond="test_category" target="loop" action="push_name:push_name_tf" />
+					<transition event="hcTracer:kernel_log_end" cond="test_category:last_out" target="end_thread" action="pop_name:pop_name_tf"/>
+					<transition event="hcTracer:kernel_log_end" cond="test_category" target="loop" action="pop_name:pop_name_tf" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
+			<fsm id="call_stack_hc_kernels_log_tf_name" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="hcTracer:kernel_log_begin" target="loop" action="entering_thread:push_name_tf"/>
+				</state>
+				<state id="loop">
+					<transition event="hcTracer:kernel_log_begin" cond="test_category" target="loop" action="push_name_tf" />
+					<transition event="hcTracer:kernel_log_end" cond="test_category:last_out" target="end_thread" action="pop_name_tf"/>
+					<transition event="hcTracer:kernel_log_end" cond="test_category" target="loop" action="pop_name_tf" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+			
 			<fsm id="call_stack_intercept_kernel" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="interceptionTracer:kernel_begin" target="loop" action="entering_thread:push_name:push_name_tf"/>
 				</state>
 				<state id="loop">
-					<transition event="interceptionTracer:kernel_begin" cond="test_name" target="loop" action="push_name:push_name_tf" />
-					<transition event="interceptionTracer:kernel_end" cond="test_name:last_out" target="end_thread" action="pop_name:pop_name_tf"/>
-					<transition event="interceptionTracer:kernel_end" cond="test_name" target="loop" action="pop_name:pop_name_tf" />
+					<transition event="interceptionTracer:kernel_begin" cond="test_category" target="loop" action="push_name:push_name_tf" />
+					<transition event="interceptionTracer:kernel_end" cond="test_category:last_out" target="end_thread" action="pop_name:pop_name_tf"/>
+					<transition event="interceptionTracer:kernel_end" cond="test_category" target="loop" action="pop_name:pop_name_tf" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-
+			<fsm id="call_stack_intercept_kernel_tf_name" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="interceptionTracer:kernel_begin" target="loop" action="entering_thread:push_name_tf"/>
+				</state>
+				<state id="loop">
+					<transition event="interceptionTracer:kernel_begin" cond="test_category" target="loop" action="push_name_tf" />
+					<transition event="interceptionTracer:kernel_end" cond="test_category:last_out" target="end_thread" action="pop_name_tf"/>
+					<transition event="interceptionTracer:kernel_end" cond="test_category" target="loop" action="pop_name_tf" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+			
 			<!-- GRPC -->
 			<fsm id="call_stack_proto" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="grpcTracer:set_proto*_start" target="loop" action="entering_thread_key:push_event_type"/>
+					<transition event="grpcTracer:set_proto*_start" target="loop" action="entering_thread_key:push_name"/>
 				</state>
 				<state id="loop">
-					<transition event="grpcTracer:set_proto*_start" cond="test_rendezvous_key" target="loop" action="push_event_type" />
-					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key:last_out" target="end_thread" action="pop_event_type"/>
-					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key" target="loop" action="pop_event_type" />
+					<transition event="grpcTracer:set_proto*_start" cond="test_rendezvous_key" target="loop" action="push_name" />
+					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key:last_out" target="end_thread" action="pop_name"/>
+					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key" target="loop" action="pop_name" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
 
 			<fsm id="call_stack_grpc" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="grpcTracer:*tensor_start" target="loop" action="entering_thread_key:push_event_type_key"/>
+					<transition event="grpcTracer:*tensor_start" target="loop" action="entering_thread_key:push_rendezvous_key"/>
 				</state>
 				<state id="loop">
-					<transition event="grpcTracer:*tensor_start" cond="test_rendezvous_key" target="loop" action="push_event_type_key"/>
-					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key:last_out" target="end_thread" action="pop_event_type_key"/>
-					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key" target="loop" action="pop_event_type_key"/>
+					<transition event="grpcTracer:*tensor_start" cond="test_rendezvous_key" target="loop" action="push_rendezvous_key"/>
+					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key:last_out" target="end_thread" action="pop_rendezvous_key"/>
+					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key" target="loop" action="pop_rendezvous_key"/>
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-
 		</patternHandler>
 	</pattern>
 </callstack>
