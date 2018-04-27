@@ -2,5 +2,6 @@ lttng-traces/
 results/
 interception-libraries/lib/
 interception-libraries/obj/
+interception-libraries/GPA/
 scripts/__pycache__/
 tracers/*.o

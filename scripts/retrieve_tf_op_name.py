@@ -1,9 +1,3 @@
-# analyse CTF traces
-# only works for sequential events like hcc kernels, sync operations TF, sessions runs, ...
-# All this script consider only TF synchronous GPU operation, as asynchronous
-# operations are almost only Tensor copy and reception, and cpu operation don't
-# launch GPU kernels
-
 #!/usr/bin/python3
 import babeltrace
 import babeltrace.reader as btr

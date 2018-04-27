@@ -1,6 +1,3 @@
-# analyse CTF traces
-# only works for sequential events like hcc kernels, sync operations TF, sessions runs, ...
-
 #!/usr/bin/python3
 import babeltrace
 import babeltrace.reader as btr
@@ -65,7 +62,6 @@ class Kernel():
         return res[:-1] + "\n"
     
     def headerCsv(self):
-        res = "index;timestamp;kernel name;session;index in session;"
         for i in self.counters:
             res += i + ";"
         return res[:-1] + "\n"

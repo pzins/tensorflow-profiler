@@ -1,6 +1,3 @@
-# analyse CTF traces
-# only works for sequential events like hcc kernels, sync operations TF, sessions runs, ...
-
 #!/usr/bin/python3
 import babeltrace
 import babeltrace.reader as btr
