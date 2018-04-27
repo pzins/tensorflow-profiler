@@ -37,18 +37,18 @@ class Module():
         # begin and end event regex
         self.begin_event = re.compile(begin)
         self.end_event = re.compile(end)
-        
+
         # unique id to do the link between start and end events
         self.unique_id = unique_id
-        
+
         # will contain all the states from the trace
         self.states = []
-        # list containing temporary State with only start event set, waiting for a 
+        # list containing temporary State with only start event set, waiting for a
         # corresponding end event
         self.open_state = []
     def states_size(self):
         return len(self.states)
-        
+
 # Represent a State from ctf events
 class State():
     def __init__(self):
@@ -74,12 +74,13 @@ class State():
     def isMatchingEndEvent(self, end_event, unique_id):
         if self.begin_event == 0:
             return False
-        return self.begin_event[unique_id] == end_event[unique_id]        
+        return self.begin_event[unique_id] == end_event[unique_id]
 
 # define the modules we want
 modules = [
             Module("sessions", "tensorflowTracer:session_start", "tensorflowTracer:session_end", "count"),
-            Module("kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
             Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name")
           ]
 
@@ -105,13 +106,13 @@ for r_event in collection.events:
                     mod.open_state[i].setSession(modules[0].states_size() + 1)
                     matching_index = i
                     break
-        
-            # if no waiting state correspond to an end event. Not possible, so 
+
+            # if no waiting state correspond to an end event. Not possible, so
             # we have errors
             if matching_index == -1:
                 print("Error no matching event, for this end")
                 exit(1)
-            
+
             mod.states.append(mod.open_state[matching_index])
             del mod.open_state[matching_index]
 
@@ -130,7 +131,7 @@ with open(outfile, "w") as f:
         for i in mod.states:
             if i.session in skip_sessions:
                 continue
-            if "kernels" in mod.name:
+            if "hip_kernels" in mod.name:
                 f.write(str(i.timestamps[0]) + ";" + str(i.timestamps[1]) + ";"\
                         + i.begin_event["tf_name"] + ";" + str(i.timestamps[1]\
                         - i.timestamps[0]) + ";" + str(i.session) + "\n")
