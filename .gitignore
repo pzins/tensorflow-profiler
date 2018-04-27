@@ -1,6 +1,6 @@
 lttng-traces/
 results/
-intercepting-libraries/lib/
-intercepting-libraries/obj/
+interception-libraries/lib/
+interception-libraries/obj/
 scripts/__pycache__/
 tracers/*.o

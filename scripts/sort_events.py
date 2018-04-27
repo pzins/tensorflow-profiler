@@ -3,7 +3,6 @@ import babeltrace
 import babeltrace.reader as btr
 import babeltrace.writer as btw
 import sys
-from collections import defaultdict
 import time
 import os
 from collections import defaultdict
