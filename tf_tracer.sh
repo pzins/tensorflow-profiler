@@ -1,17 +1,21 @@
 # parse arguments
 usage()
 {
-    echo "Usage: $0 [-f | --file] [-h | --hc]
+    echo "Usage: $0 [-f | --file] [-h | --hc] [-q | --quiet]
             where:
                 -f | --file     : tensorflow script name
                 --hc=[1-3]      :   1 = set HSA_TOOLS_LIB and LD_PRELOAD environment variables
                                     2 = set HCC_PROFILE environment variable : use HC instrumentation (default)
                                     3 = set HCC_PROFILE environment variable : use HC logs file
+                -q | --quiet    : quiet mode for TensorFlow application
+                -a | --args     : arguments to pass to TensorFlow application
 " 1>&2; exit 1; }
 
 while true; do
     case "$1" in
+        -q | --quiet ) quiet_mode=true; shift ;;
         -f | --file ) tf_program_name="$2"; shift 2;;
+        -a | --args ) tf_program_args="$2"; shift 2;;
         --hc ) hc="$2"; shift 2;;
         -h | --help ) usage; shift;;
         -- ) shift; break ;;
@@ -27,6 +31,10 @@ fi
 if [ -z "${hc}" ]
 then
     hc=2
+fi
+if [ -z "${tf_program_args}" ]
+then
+    tf_program_args=""
 fi
 
 # get scripts directory
@@ -46,9 +54,13 @@ cd $tf_program_dir
 # run TensorFlow applciation
 if [ "${hc}" == "3" ]
 then
-    python3 $tf_program_name > /tmp/tensorflow-profiler-gpu-log.log 2>&1
+    python3 $tf_program_name $tf_program_args > /tmp/tensorflow-profiler-gpu-log.log 2>&1
+# need to stay after HC == 3 case because quiet mode will discard all the log
+elif [ "${quiet_mode}" == true ]
+then
+    python3 $tf_program_name $tf_program_args > /dev/null 2>&1
 else
-    python3 $tf_program_name
+    python3 $tf_program_name $tf_program_args
 fi
 
 # go back to scripts directory
