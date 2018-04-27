@@ -1,5 +1,10 @@
 #include "hsa_perf_counters.h"
 
+uint16_t workgroup_size[3];
+uint32_t grid_size[3];
+uint32_t private_segment_size;
+uint32_t group_segment_size;
+
 void pre_dispatch_callback(const hsa_dispatch_callback_t* dispatch_params, void* user_args)
 {
     pthread_mutex_lock(&mutex);
@@ -27,7 +32,14 @@ void pre_dispatch_callback(const hsa_dispatch_callback_t* dispatch_params, void*
 
     GPA_BeginSession(&session_id);
     session_kernel_objects[session_id] = dispatch_params->aql_packet->kernel_object;
-
+    workgroup_size[0] = dispatch_params->aql_packet->workgroup_size_x;
+    workgroup_size[1] = dispatch_params->aql_packet->workgroup_size_y;
+    workgroup_size[2] = dispatch_params->aql_packet->workgroup_size_z;
+    grid_size[0] = dispatch_params->aql_packet->grid_size_x;
+    grid_size[1] = dispatch_params->aql_packet->grid_size_x;
+    grid_size[2] = dispatch_params->aql_packet->grid_size_x;
+    private_segment_size = dispatch_params->aql_packet->private_segment_size;
+    group_segment_size = dispatch_params->aql_packet->group_segment_size;
     // Sample the enabled counters
     GPA_BeginPass();
     GPA_BeginSample(0);
@@ -54,7 +66,7 @@ void read_gpa_counters(gpa_uint32 session_id)
 {
     bool session_ready;
     GPA_IsSessionReady(&session_ready, session_id);
-
+    tracepoint(interceptionTracer, kernel_parameters, workgroup_size, grid_size, private_segment_size, group_segment_size);
     if (session_ready) {
         gpa_uint32 session_count;
         GPA_GetSampleCount(session_id, &session_count);

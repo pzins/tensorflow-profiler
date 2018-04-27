@@ -182,6 +182,24 @@ TRACEPOINT_EVENT(
 
 TRACEPOINT_EVENT(
 	interceptionTracer,
+	kernel_parameters,
+	TP_ARGS(
+		uint16_t*, workgroup_size_arg,
+        uint32_t*, grid_size_arg,
+        uint64_t, static_group_segment_size_arg,
+		uint64_t, private_segment_size_arg
+
+	),
+	TP_FIELDS(
+		ctf_array(uint16_t, workgroup_size, workgroup_size_arg, 3)
+		ctf_array(uint32_t, grid_size, grid_size_arg, 3)
+		ctf_integer(uint64_t, static_group_segment_size, static_group_segment_size_arg)
+		ctf_integer(uint64_t, private_segment_size, private_segment_size_arg)
+	)
+)
+
+TRACEPOINT_EVENT(
+	interceptionTracer,
 	perf_counter_uint32,
 	TP_ARGS(
 		const char*, cat_arg,
