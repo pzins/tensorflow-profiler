@@ -44,10 +44,14 @@ else
     python3 retrieve_tf_op_name.py
 fi
 
-# no need to retrieve tf op name so just copy the results of sorting script to the results folder
-if [ "$CUDA" == true ]
+if [ "$CUDA" == true ] || [ "$TF_NAME" != true ]
 then
     cp /tmp/tensorflow-profiler/* ../results/
 fi
-
-python3 vtid.py
+if [ -d "$DIRECTORY" ]; then
+  if [ -z "$(ls -A ../results/)" ]; then
+    echo "Results folder is empty"
+  else
+    python3 vtid.py
+  fi
+fi
