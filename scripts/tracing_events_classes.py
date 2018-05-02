@@ -32,6 +32,17 @@ dim_array16_fd = btw.ArrayFieldDeclaration(uint16_fd, 3)
 # Create event classes
 event_classes = {}
 
+# opencl
+event_classes['clust_provider:kernel_start'] = btw.EventClass('clust_provider:kernel_start')
+event_classes['clust_provider:kernel_start'].add_field(string_fd, 'cat')
+event_classes['clust_provider:kernel_start'].add_field(string_fd, 'name')
+event_classes['clust_provider:kernel_start'].add_field(uint64_fd, 'timestamp')
+event_classes['clust_provider:kernel_end'] = btw.EventClass('clust_provider:kernel_end')
+event_classes['clust_provider:kernel_end'].add_field(string_fd, 'cat')
+event_classes['clust_provider:kernel_end'].add_field(string_fd, 'name')
+event_classes['clust_provider:kernel_end'].add_field(uint64_fd, 'timestamp')
+
+
 # interceptionTracer
 event_classes['interceptionTracer:kernel_begin'] = btw.EventClass('interceptionTracer:kernel_begin')
 event_classes['interceptionTracer:kernel_begin'].add_field(string_fd, 'cat')

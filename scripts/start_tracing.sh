@@ -94,7 +94,8 @@ $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" -
 $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
 # $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_bins_stats" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate " --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "clust_provider:*" --channel=ustchannel
 
 
 

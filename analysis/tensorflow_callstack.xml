@@ -178,6 +178,29 @@
 				<final id="end_thread"/>
 			</fsm>
 
+			<fsm id="call_stack_opencl_api" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="clust_provider:*start" target="loop" action="entering_thread:push_name"/>
+				</state>
+				<state id="loop">
+					<transition event="clust_provider:*start" cond="test_category" target="loop" action="push_name" />
+					<transition event="clust_provider:*end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
+					<transition event="clust_provider:*end" cond="test_category" target="loop" action="pop_name" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+			<fsm id="call_stack_opencl_kernels" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="clust_provider:kernel_start" target="loop" action="entering_thread:push_name"/>
+				</state>
+				<state id="loop">
+					<transition event="clust_provider:kernel_start" cond="test_category" target="loop" action="push_name" />
+					<transition event="clust_provider:kernel_end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
+					<transition event="clust_provider:kernel_end" cond="test_category" target="loop" action="pop_name" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
+
 			<!-- TensorFlow -->
 			<fsm id="call_stack_tf_session" multiple="true" initial="Wait_thread_start">
 			    <state id="Wait_thread_start">
@@ -247,7 +270,7 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-		
+
 			<!-- HC -->
 			<fsm id="call_stack_hc_memcpy" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
@@ -293,7 +316,7 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-		
+
 			<fsm id="call_stack_hc_kernels_log" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="hcTracer:kernel_log_begin" target="loop" action="entering_thread:push_name:push_name_tf"/>
@@ -316,7 +339,7 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-			
+
 			<fsm id="call_stack_intercept_kernel" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="interceptionTracer:kernel_begin" target="loop" action="entering_thread:push_name:push_name_tf"/>
@@ -339,7 +362,7 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-			
+
 			<!-- GRPC -->
 			<fsm id="call_stack_proto" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">

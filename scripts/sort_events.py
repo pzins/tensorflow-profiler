@@ -85,8 +85,12 @@ cnt_incoherent_barrier = 0
 init_time = 0
 pool_memory_allocate_events = {}
 
+gpu_cpu_diff = 1525296255456463853 - 21161950635476
+
 for r_event in collection.events:
     name = r_event.name
+    if "clust_provider" in name and "kernel" not in name:
+        continue
     event_time = r_event.timestamp
     w_event = btw.Event(event_classes[name])
 
@@ -106,6 +110,10 @@ for r_event in collection.events:
             continue
 
         w_event.payload(f).value = r_event[f]
+
+    if "clust_provider:kernel" in name:
+        event_time = r_event["timestamp"] + gpu_cpu_diff
+
 
     if "interceptionTracer:kernel" in name:
         if init_time == 0:
