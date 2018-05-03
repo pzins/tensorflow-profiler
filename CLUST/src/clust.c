@@ -1,5 +1,6 @@
 #define _GNU_SOURCE
 
+
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -271,6 +272,7 @@ const char* getCommandNameFromCommandID(cl_command_type command) {
 	return "ERROR: Unknown event type";
 }
 
+char** kernels_name = (char**) malloc(sizeof(char*)*10);
 
 void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *user_data)
 {
@@ -1134,6 +1136,11 @@ cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, 
 			toDelete = true;
 		}
 	}
+
+	char* name = (char*)malloc(sizeof(char)*512);
+	size_t real_size = 0;
+	cl_int res = clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * 512, &name, &real_size);
+
 
 	tracepoint(openclTracer, function_entry, __func__, "opencl");
 	cl_int ret = reallib_clEnqueueNDRangeKernel(command_queue, kernel, work_dim, global_work_offset, global_work_size, local_work_size, num_events_in_wait_list, event_wait_list, event);

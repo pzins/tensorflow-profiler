@@ -45,6 +45,9 @@ hcc_runtime_regex_1 = re.compile("hcTracer:kernel_log_begin")
 hcc_runtime_regex_2 = re.compile("hcTracer:kernel_begin")
 interceptionTracer_regex = re.compile("interceptionTracer:kernel_begin")
 
+opencl_enqueue_kernel_1 = re.compile("openclTracer:function_entry")
+opencl_enqueue_kernel_2 = re.compile("clEnqueueNDRangeKernel")
+opencl_kernel = re.compile("openclTracer:kernel_begin")
 
 
 # unique id also to link begin and end events together
@@ -85,7 +88,8 @@ for r_event in collection.events:
 
 
     # add a new kernel launch command
-    if (re.match(hip_kernel1_regex, name) and re.match(hip_kernel2_regex, r_event["name"])) or re.match(interceptionTracer_aql_regex, name):
+    if (re.match(hip_kernel1_regex, name) and re.match(hip_kernel2_regex, r_event["name"])) or re.match(interceptionTracer_aql_regex, name) or\
+       (re.match(opencl_enqueue_kernel_1, name) and re.match(opencl_enqueue_kernel_2, name)):
 
         # if there is an active tf operation, we add it in the list. Otherwise, just add None
         # print(len(open_state))
