@@ -58,6 +58,7 @@ event_classes['openclTracer:kernel_submitted'].add_field(uint64_fd, 'timestamp')
 event_classes['openclTracer:kernel_begin'] = btw.EventClass('openclTracer:kernel_begin')
 event_classes['openclTracer:kernel_begin'].add_field(string_fd, 'cat')
 event_classes['openclTracer:kernel_begin'].add_field(string_fd, 'name')
+# event_classes['openclTracer:kernel_begin'].add_field(string_fd, 'tf_name')
 event_classes['openclTracer:kernel_begin'].add_field(uint64_fd, 'timestamp')
 
 event_classes['openclTracer:kernel_end'] = btw.EventClass('openclTracer:kernel_end')

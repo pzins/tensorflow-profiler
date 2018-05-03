@@ -48,11 +48,13 @@ TRACEPOINT_EVENT(
 		kernel_begin,
     TP_ARGS(
 			const char*, name_arg,
+			const char*, tf_name_arg,
 			const char*, cat_arg,
       ulong, timestamp_arg
     ),
     TP_FIELDS(
 			      ctf_string(name, name_arg)
+			      ctf_string(tf_name, tf_name_arg)
 						ctf_string(cat, cat_arg)
             ctf_integer(ulong, timestamp, timestamp_arg)
     )

@@ -272,7 +272,7 @@ const char* getCommandNameFromCommandID(cl_command_type command) {
 	return "ERROR: Unknown event type";
 }
 
-char** kernels_name = (char**) malloc(sizeof(char*)*10);
+// char** kernels_name = (char**) malloc(sizeof(char*)*10);
 
 void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *user_data)
 {
@@ -306,7 +306,7 @@ void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *us
 	// Record with UST tracepoint
 	// tracepoint(openclTracer, clust_device_event, __func__, "opencl", (ulong)queue, command, queued, submit, start, end);
 	if(command == CL_COMMAND_NDRANGE_KERNEL) {
-		tracepoint(openclTracer, kernel_begin, "kernel", "kernel", start);
+		tracepoint(openclTracer, kernel_begin, "kernel", "kernel", "kernel", start);
 		tracepoint(openclTracer, kernel_queued, "kernel", "kernel", queued);
 		tracepoint(openclTracer, kernel_submitted, "kernel", "kernel", submit);
 		tracepoint(openclTracer, kernel_end, "kernel", "kernel", end);
@@ -1136,10 +1136,10 @@ cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, 
 			toDelete = true;
 		}
 	}
-
-	char* name = (char*)malloc(sizeof(char)*512);
-	size_t real_size = 0;
-	cl_int res = clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * 512, &name, &real_size);
+	//
+	// char* name = (char*)malloc(sizeof(char)*512);
+	// size_t real_size = 0;
+	// cl_int res = clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * 512, &name, &real_size);
 
 
 	tracepoint(openclTracer, function_entry, __func__, "opencl");
