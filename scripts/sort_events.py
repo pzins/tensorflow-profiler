@@ -8,7 +8,7 @@ import os
 from collections import defaultdict
 import argparse
 from utils import debugPrint
-
+import math
 
 
 
@@ -85,15 +85,16 @@ cnt_incoherent_barrier = 0
 init_time = 0
 pool_memory_allocate_events = {}
 
-gpu_cpu_diff = 1525296255456463853 - 21161950635476
+# OpenCL times to synchronize GPU times with CPU times
+opencl_device_events = []
+queued_times = []
+end_times = []
+enqueueNDRangeKernel_times = []
+callback_times = []
 
 for r_event in collection.events:
     name = r_event.name
-    if "clust_provider" in name and "kernel" not in name:
-        continue
     event_time = r_event.timestamp
-    w_event = btw.Event(event_classes[name])
-
     fields = r_event.field_list_with_scope(babeltrace.common.CTFScope.EVENT_FIELDS)
     w_event = btw.Event(event_classes[name])
 
@@ -111,8 +112,26 @@ for r_event in collection.events:
 
         w_event.payload(f).value = r_event[f]
 
-    if "clust_provider:kernel" in name:
-        event_time = r_event["timestamp"] + gpu_cpu_diff
+
+    # if opencl events : require some times for synchonization with CPU time
+    if "openclTracer:callback" == name:
+        callback_times.append(event_time)
+        continue
+    if "openclTracer:function_exit" == name and "Enqueue" in r_event["name"]:
+        enqueueNDRangeKernel_times.append(event_time)
+        # continue
+    elif "openclTracer:kernel_queued" == name or "openclTracer:device_queued" == name:
+        opencl_device_events.append(r_event)
+        queued_times.append(r_event["timestamp"])
+        continue
+    elif "openclTracer:kernel_end" == name or "openclTracer:device_end" == name:
+        opencl_device_events.append(r_event)
+        end_times.append(r_event["timestamp"])
+        continue
+    elif "openclTracer:kernel_begin" == name or "openclTracer:kernel_submitted" == name or \
+         "openclTracer:device_begin" == name or "openclTracer:device_submitted" == name:
+        opencl_device_events.append(r_event)
+        continue
 
 
     if "interceptionTracer:kernel" in name:
@@ -242,6 +261,47 @@ if args.gpu_log != None:
         w_event_end.payload("name").value = i[1]
         w_event_end.payload("timestamp").value = i[4]
         events[i[4]].append([w_event_end, threadId])
+
+
+
+# If OpenCL event, synchronize events GPU / CPU times
+
+
+# print("opencl_device_events", len(opencl_device_events))
+# print("queued_times", len(queued_times))
+# print("end_times", len(end_times))
+# print("enqueueNDRangeKernel_times", len(enqueueNDRangeKernel_times))
+# print("callback_times", len(callback_times))
+assert((len(queued_times) == len(enqueueNDRangeKernel_times) == len(callback_times)))
+
+# compute mean between CPU_EnqueuedCommand_time and GPU_kernel/device_queued
+# compute mean between CPU_callback_time and GPU_kernel/device_end
+mean_enqueue = 0
+mean_callback = 0
+for i in range(len(queued_times)):
+    mean_enqueue += enqueueNDRangeKernel_times[i] - queued_times[i]
+    mean_callback += callback_times[i] - end_times[i]
+mean_enqueue /= len(queued_times)
+mean_callback /= len(queued_times)
+# print(mean_enqueue)
+# print(mean_callback)
+# Finally use the mean of both difference
+diff = math.floor((mean_callback + mean_enqueue) / 2)
+
+# Add the OpenCL kernels and device events
+for r_event in opencl_device_events:
+    name = r_event.name
+    event_time = r_event.timestamp
+    fields = r_event.field_list_with_scope(babeltrace.common.CTFScope.EVENT_FIELDS)
+    w_event = btw.Event(event_classes[name])
+
+    for f in fields:
+        w_event.payload(f).value = r_event[f]
+
+    event_time = r_event["timestamp"] + diff
+    threadId = r_event.field_with_scope("vtid", babeltrace.common.CTFScope.STREAM_EVENT_CONTEXT)
+    events[event_time].append([w_event, threadId])
+
 
 # Append events to the stream
 timestamps = list(events.keys())

@@ -32,15 +32,59 @@ dim_array16_fd = btw.ArrayFieldDeclaration(uint16_fd, 3)
 # Create event classes
 event_classes = {}
 
-# opencl
-event_classes['clust_provider:kernel_start'] = btw.EventClass('clust_provider:kernel_start')
-event_classes['clust_provider:kernel_start'].add_field(string_fd, 'cat')
-event_classes['clust_provider:kernel_start'].add_field(string_fd, 'name')
-event_classes['clust_provider:kernel_start'].add_field(uint64_fd, 'timestamp')
-event_classes['clust_provider:kernel_end'] = btw.EventClass('clust_provider:kernel_end')
-event_classes['clust_provider:kernel_end'].add_field(string_fd, 'cat')
-event_classes['clust_provider:kernel_end'].add_field(string_fd, 'name')
-event_classes['clust_provider:kernel_end'].add_field(uint64_fd, 'timestamp')
+
+
+# openclTracer
+event_classes['openclTracer:function_entry'] = btw.EventClass('openclTracer:function_entry')
+event_classes['openclTracer:function_entry'].add_field(string_fd, 'cat')
+event_classes['openclTracer:function_entry'].add_field(string_fd, 'name')
+
+event_classes['openclTracer:function_exit'] = btw.EventClass('openclTracer:function_exit')
+event_classes['openclTracer:function_exit'].add_field(string_fd, 'cat')
+event_classes['openclTracer:function_exit'].add_field(string_fd, 'name')
+
+event_classes['openclTracer:callback'] = btw.EventClass('openclTracer:callback')
+
+event_classes['openclTracer:kernel_queued'] = btw.EventClass('openclTracer:kernel_queued')
+event_classes['openclTracer:kernel_queued'].add_field(string_fd, 'cat')
+event_classes['openclTracer:kernel_queued'].add_field(string_fd, 'name')
+event_classes['openclTracer:kernel_queued'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:kernel_submitted'] = btw.EventClass('openclTracer:kernel_submitted')
+event_classes['openclTracer:kernel_submitted'].add_field(string_fd, 'cat')
+event_classes['openclTracer:kernel_submitted'].add_field(string_fd, 'name')
+event_classes['openclTracer:kernel_submitted'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:kernel_begin'] = btw.EventClass('openclTracer:kernel_begin')
+event_classes['openclTracer:kernel_begin'].add_field(string_fd, 'cat')
+event_classes['openclTracer:kernel_begin'].add_field(string_fd, 'name')
+event_classes['openclTracer:kernel_begin'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:kernel_end'] = btw.EventClass('openclTracer:kernel_end')
+event_classes['openclTracer:kernel_end'].add_field(string_fd, 'cat')
+event_classes['openclTracer:kernel_end'].add_field(string_fd, 'name')
+event_classes['openclTracer:kernel_end'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:device_queued'] = btw.EventClass('openclTracer:device_queued')
+event_classes['openclTracer:device_queued'].add_field(string_fd, 'cat')
+event_classes['openclTracer:device_queued'].add_field(string_fd, 'name')
+event_classes['openclTracer:device_queued'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:device_submitted'] = btw.EventClass('openclTracer:device_submitted')
+event_classes['openclTracer:device_submitted'].add_field(string_fd, 'cat')
+event_classes['openclTracer:device_submitted'].add_field(string_fd, 'name')
+event_classes['openclTracer:device_submitted'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:device_begin'] = btw.EventClass('openclTracer:device_begin')
+event_classes['openclTracer:device_begin'].add_field(string_fd, 'cat')
+event_classes['openclTracer:device_begin'].add_field(string_fd, 'name')
+event_classes['openclTracer:device_begin'].add_field(uint64_fd, 'timestamp')
+
+event_classes['openclTracer:device_end'] = btw.EventClass('openclTracer:device_end')
+event_classes['openclTracer:device_end'].add_field(string_fd, 'cat')
+event_classes['openclTracer:device_end'].add_field(string_fd, 'name')
+event_classes['openclTracer:device_end'].add_field(uint64_fd, 'timestamp')
+
 
 
 # interceptionTracer
