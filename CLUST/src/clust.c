@@ -11,6 +11,9 @@
 #define TRACEPOINT_CREATE_PROBES
 #include "clust_tp.h"
 
+#define KERNEL_NAME_SIZE 1024
+#define MAX_KERNEL_SAVED 2
+
 #ifdef __cplusplus
 "C" {
 #endif
@@ -272,7 +275,14 @@ const char* getCommandNameFromCommandID(cl_command_type command) {
 	return "ERROR: Unknown event type";
 }
 
-// char** kernels_name = (char**) malloc(sizeof(char*)*10);
+void incr_index(int *index) {
+	*index = (*index + 1) % MAX_KERNEL_SAVED;
+}
+
+char* kernel_name[KERNEL_NAME_SIZE][MAX_KERNEL_SAVED];
+int read_index = 0;
+int write_index = 0;
+
 
 void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *user_data)
 {
@@ -306,10 +316,12 @@ void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *us
 	// Record with UST tracepoint
 	// tracepoint(openclTracer, clust_device_event, __func__, "opencl", (ulong)queue, command, queued, submit, start, end);
 	if(command == CL_COMMAND_NDRANGE_KERNEL) {
-		tracepoint(openclTracer, kernel_begin, "kernel", "kernel", "kernel", start);
-		tracepoint(openclTracer, kernel_queued, "kernel", "kernel", queued);
-		tracepoint(openclTracer, kernel_submitted, "kernel", "kernel", submit);
-		tracepoint(openclTracer, kernel_end, "kernel", "kernel", end);
+		tracepoint(openclTracer, kernel_begin, "kernel", kernel_name[read_index], "kernel", start);
+		// printf("kernel start : %s  %d\n", kernel_name[read_index], read_index);
+		tracepoint(openclTracer, kernel_queued, "kernel", kernel_name[read_index], queued);
+		tracepoint(openclTracer, kernel_submitted, "kernel", kernel_name[read_index], submit);
+		tracepoint(openclTracer, kernel_end, "kernel", kernel_name[read_index], end);
+		incr_index(&read_index);
 	} else {
 		tracepoint(openclTracer, device_begin, "device", "device", start);
 		tracepoint(openclTracer, device_queued, "device", "device", queued);
@@ -1136,10 +1148,12 @@ cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, 
 			toDelete = true;
 		}
 	}
-	//
-	// char* name = (char*)malloc(sizeof(char)*512);
-	// size_t real_size = 0;
-	// cl_int res = clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * 512, &name, &real_size);
+
+	char name[1024];
+	size_t real_size = 0;
+	cl_int res = reallib_clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * KERNEL_NAME_SIZE, name, &real_size);
+	strcpy(*(kernel_name+write_index), name);
+	incr_index(&write_index);
 
 
 	tracepoint(openclTracer, function_entry, __func__, "opencl");
