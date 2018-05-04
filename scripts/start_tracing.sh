@@ -109,5 +109,6 @@ if [ "${python_tracing}" == "True" ]; then
 fi
 
 $is_sudo lttng add-context -u -t vtid
+# $is_sudo lttng add-context -k -t vtid
 
 $is_sudo lttng start

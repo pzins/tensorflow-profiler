@@ -6,6 +6,8 @@
     <callstackGroup name="Tensorflow Callstack">
 		<level path="Views/*" />
 		<level path="Threads/*"/>
+		<thread level="1" />
+
     </callstackGroup>
 	<pattern version="0" id="tensorflow_cs_pattern">
 		<head>
@@ -13,18 +15,31 @@
 			<label value="Tensorflow" />
 		</head>
 
+		<!-- for general events -->
 		<location id="CurrentThread">
 			<stateAttribute type="constant" value="Views" />
 			<stateAttribute type="query">
 				<stateAttribute type="constant" value="#CurrentScenario" />
 				<stateAttribute type="constant" value="component" />
 			</stateAttribute>
+
 			<stateAttribute type="constant" value="Threads" />
 			<stateAttribute type="query">
 				<stateAttribute type="constant" value="#CurrentScenario" />
 				<stateAttribute type="constant" value="threadID" />
 			</stateAttribute>
-			<!-- <stateAttribute type="pool" /> -->
+		</location>
+
+		<!-- for async events -->
+		<location id="CurrentThread_async">
+			<stateAttribute type="constant" value="Views" />
+			<stateAttribute type="query">
+				<stateAttribute type="constant" value="#CurrentScenario" />
+				<stateAttribute type="constant" value="component" />
+			</stateAttribute>
+			<stateAttribute type="constant" value="Threads" />
+
+			<stateAttribute type="pool" />
 		</location>
 
 		<patternHandler>
@@ -75,7 +90,17 @@
 					</condition>
 				</if>
 			</test>
-
+			<test id="last_out_async">
+				<if>
+					<condition>
+						<stateValue type="query">
+							<stateAttribute type="location" value="CurrentThread_async" />
+							<stateAttribute type="constant" value="CallStack" />
+						</stateValue>
+						<stateValue type="int" value="1" />
+					</condition>
+				</if>
+			</test>
 
 
 <!-- =============================== ACTIONS =============================== -->
@@ -116,6 +141,22 @@
 						<stateValue type="eventField" value="name" stack="pop"/>
 				</stateChange>
 			</action>
+
+			<action id="push_name_async">
+				<stateChange>
+						<stateAttribute type="location" value="CurrentThread_async" />
+						<stateAttribute type="constant" value="CallStack" />
+						<stateValue type="eventField" value="name" stack="push"/>
+				</stateChange>
+			</action>
+			<action id="pop_name_async">
+				<stateChange>
+						<stateAttribute type="location" value="CurrentThread_async" />
+						<stateAttribute type="constant" value="CallStack" />
+						<stateValue type="eventField" value="name" stack="pop"/>
+				</stateChange>
+			</action>
+
 			<action id="push_tf_name">
 				<stateChange>
 						<stateAttribute type="location" value="CurrentThread" />
@@ -134,7 +175,7 @@
 				<stateChange>
 						<stateAttribute type="location" value="CurrentThread" />
 						<stateAttribute type="constant" value="CallStack" />
-						<stateValue type="eventField" value="count" stack="push"/>
+						<stateValue type="eventField" value="count" stack="push" forcedType="string"/>
 				</stateChange>
 			</action>
 			<action id="pop_count">
@@ -162,8 +203,6 @@
 
 
 
-
-
 <!-- ================================= FSM ================================= -->
 			<!-- API -->
 			<fsm id="call_stack_api" multiple="true" initial="Wait_thread_start">
@@ -177,7 +216,6 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-
 
 			<!-- TensorFlow -->
 			<fsm id="call_stack_tf_session" multiple="true" initial="Wait_thread_start">
@@ -202,28 +240,31 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
+
 			<fsm id="call_stack_tf_async_op" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="tensorflowTracer:async_operation_start" target="loop" action="entering_thread:push_name"/>
+					<transition event="tensorflowTracer:async_operation_start" target="loop" action="entering_thread:push_name_async"/>
 				</state>
 				<state id="loop">
-					<transition event="tensorflowTracer:async_operation_start" cond="test_async_name" target="loop" action="push_name" />
-					<transition event="tensorflowTracer:async_operation_end" cond="test_async_name:last_out" target="end_thread" action="pop_name"/>
-					<transition event="tensorflowTracer:async_operation_end" cond="test_async_name" target="loop" action="pop_name" />
+					<transition event="tensorflowTracer:async_operation_start" cond="test_async_name" target="loop" action="push_name_async" />
+					<transition event="tensorflowTracer:async_operation_end" cond="test_async_name:last_out_async" target="end_thread" action="pop_name_async"/>
+					<transition event="tensorflowTracer:async_operation_end" cond="test_async_name" target="loop" action="pop_name_async" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
+
 			<fsm id="call_stack_rdv" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="tensorflowTracer:rdv_send" target="loop" action="entering_thread:push_name"/>
+					<transition event="tensorflowTracer:rdv_send" target="loop" action="entering_thread:push_name_async"/>
 				</state>
 				<state id="loop">
-					<transition event="tensorflowTracer:rdv_send" cond="test_async_name" target="loop" action="push_name"/>
-					<transition event="tensorflowTracer:rdv_recv" cond="test_async_name:last_out" target="end_thread" action="pop_name"/>
-					<transition event="tensorflowTracer:rdv_recv" cond="test_async_name" target="loop" action="pop_name"/>
+					<transition event="tensorflowTracer:rdv_send" cond="test_async_name" target="loop" action="push_name_async"/>
+					<transition event="tensorflowTracer:rdv_recv" cond="test_async_name:last_out_async" target="end_thread" action="pop_name_async"/>
+					<transition event="tensorflowTracer:rdv_recv" cond="test_async_name" target="loop" action="pop_name_async"/>
 				</state>
 				<final id="end_thread"/>
 			</fsm>
+
 			<fsm id="call_stack_stream" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="streamTracer:*start" target="loop" action="entering_thread:push_name"/>
