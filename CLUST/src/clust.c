@@ -11,8 +11,8 @@
 #define TRACEPOINT_CREATE_PROBES
 #include "clust_tp.h"
 
-#define KERNEL_NAME_SIZE 1024
-#define MAX_KERNEL_SAVED 2
+#define KERNEL_NAME_SIZE 4094
+#define MAX_KERNEL_SAVED 64
 
 #ifdef __cplusplus
 "C" {
@@ -314,7 +314,7 @@ void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *us
 	ret = reallib_clGetEventInfo(event,CL_EVENT_COMMAND_QUEUE,sizeof(cl_command_queue), &queue, NULL);
 	if(ret != CL_SUCCESS) fprintf(stderr, "CLUST::eventCompleted:error->CL_EVENT_COMMAND_QUEUE returned %d\n", ret);
 	// Record with UST tracepoint
-	// tracepoint(openclTracer, clust_device_event, __func__, "opencl", (ulong)queue, command, queued, submit, start, end);
+	// tracepoint(openclTracer, clust_device_event, "opencl", __func__, (ulong)queue, command, queued, submit, start, end);
 	if(command == CL_COMMAND_NDRANGE_KERNEL) {
 		tracepoint(openclTracer, kernel_begin, "kernel", kernel_name[read_index], "kernel", start);
 		// printf("kernel start : %s  %d\n", kernel_name[read_index], read_index);
@@ -356,418 +356,418 @@ void CL_CALLBACK eventCompleted(cl_event event, cl_int cmd_exec_status, void *us
 
 
 cl_int clGetPlatformIDs(cl_uint num_entries, cl_platform_id * platforms, cl_uint * num_platforms)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetPlatformIDs(num_entries, platforms, num_platforms);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetPlatformInfo(cl_platform_id platform, cl_platform_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetPlatformInfo(platform, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetDeviceIDs(cl_platform_id platform, cl_device_type device_type, cl_uint num_entries, cl_device_id * devices, cl_uint * num_devices)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetDeviceIDs(platform, device_type, num_entries, devices, num_devices);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetDeviceInfo(cl_device_id device, cl_device_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetDeviceInfo(device, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_context clCreateContext(const cl_context_properties * properties, cl_uint num_devices, const cl_device_id * devices, void (CL_CALLBACK * pfn_notify )(const char *, const void *, size_t, void *) , void * param_4, cl_int * user_data)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_context ret = reallib_clCreateContext(properties, num_devices, devices, pfn_notify, param_4, user_data);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_context clCreateContextFromType(const cl_context_properties * properties, cl_device_type device_type, void (CL_CALLBACK * pfn_notify )(const char *, const void *, size_t, void *) , void * param_3, cl_int * user_data)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_context ret = reallib_clCreateContextFromType(properties, device_type, pfn_notify, param_3, user_data);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainContext(cl_context context)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainContext(context);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseContext(cl_context context)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseContext(context);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetContextInfo(cl_context context, cl_context_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetContextInfo(context, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_command_queue clCreateCommandQueue(cl_context context, cl_device_id device, cl_command_queue_properties properties, cl_int * errcode_ret)  {
 	properties |= CL_QUEUE_PROFILING_ENABLE;
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_command_queue ret = reallib_clCreateCommandQueue(context, device, properties, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainCommandQueue(cl_command_queue command_queue)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainCommandQueue(command_queue);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseCommandQueue(cl_command_queue command_queue)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseCommandQueue(command_queue);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetCommandQueueInfo(cl_command_queue command_queue, cl_command_queue_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetCommandQueueInfo(command_queue, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_mem clCreateBuffer(cl_context context, cl_mem_flags flags, size_t size, void * host_ptr, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_mem ret = reallib_clCreateBuffer(context, flags, size, host_ptr, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_mem clCreateSubBuffer(cl_mem buffer, cl_mem_flags flags, cl_buffer_create_type buffer_create_type, const void * buffer_create_info, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_mem ret = reallib_clCreateSubBuffer(buffer, flags, buffer_create_type, buffer_create_info, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_mem clCreateImage2D(cl_context context, cl_mem_flags flags, const cl_image_format * image_format, size_t image_width, size_t image_height, size_t image_row_pitch, void * host_ptr, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_mem ret = reallib_clCreateImage2D(context, flags, image_format, image_width, image_height, image_row_pitch, host_ptr, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_mem clCreateImage3D(cl_context context, cl_mem_flags flags, const cl_image_format * image_format, size_t image_width, size_t image_height, size_t image_depth, size_t image_row_pitch, size_t image_slice_pitch, void * host_ptr, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_mem ret = reallib_clCreateImage3D(context, flags, image_format, image_width, image_height, image_depth, image_row_pitch, image_slice_pitch, host_ptr, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainMemObject(cl_mem memobj)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainMemObject(memobj);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseMemObject(cl_mem memobj)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseMemObject(memobj);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetSupportedImageFormats(cl_context context, cl_mem_flags flags, cl_mem_object_type image_type, cl_uint num_entries, cl_image_format * image_formats, cl_uint * num_image_formats)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetSupportedImageFormats(context, flags, image_type, num_entries, image_formats, num_image_formats);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetMemObjectInfo(cl_mem memobj, cl_mem_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetMemObjectInfo(memobj, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetImageInfo(cl_mem image, cl_image_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetImageInfo(image, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clSetMemObjectDestructorCallback(cl_mem memobj, void (CL_CALLBACK * pfn_notify )( cl_mem , void* ) , void * user_data)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clSetMemObjectDestructorCallback(memobj, pfn_notify, user_data);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_sampler clCreateSampler(cl_context context, cl_bool normalized_coords, cl_addressing_mode addressing_mode, cl_filter_mode filter_mode, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_sampler ret = reallib_clCreateSampler(context, normalized_coords, addressing_mode, filter_mode, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainSampler(cl_sampler sampler)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainSampler(sampler);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseSampler(cl_sampler sampler)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseSampler(sampler);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetSamplerInfo(cl_sampler sampler, cl_sampler_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetSamplerInfo(sampler, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_program clCreateProgramWithSource(cl_context context, cl_uint count, const char ** strings, const size_t * lengths, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_program ret = reallib_clCreateProgramWithSource(context, count, strings, lengths, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_program clCreateProgramWithBinary(cl_context context, cl_uint num_devices, const cl_device_id * device_list, const size_t * lengths, const unsigned char ** binaries, cl_int * binary_status, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_program ret = reallib_clCreateProgramWithBinary(context, num_devices, device_list, lengths, binaries, binary_status, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainProgram(cl_program program)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainProgram(program);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseProgram(cl_program program)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseProgram(program);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clBuildProgram(cl_program program, cl_uint num_devices, const cl_device_id * device_list, const char * options, void (CL_CALLBACK * pfn_notify )(cl_program , void * ) , void * user_data)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clBuildProgram(program, num_devices, device_list, options, pfn_notify, user_data);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clUnloadCompiler()  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clUnloadCompiler();
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetProgramInfo(cl_program program, cl_program_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetProgramInfo(program, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetProgramBuildInfo(cl_program program, cl_device_id device, cl_program_build_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetProgramBuildInfo(program, device, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_kernel clCreateKernel(cl_program program, const char * kernel_name, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_kernel ret = reallib_clCreateKernel(program, kernel_name, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clCreateKernelsInProgram(cl_program program, cl_uint num_kernels, cl_kernel * kernels, cl_uint * num_kernels_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clCreateKernelsInProgram(program, num_kernels, kernels, num_kernels_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainKernel(cl_kernel kernel)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainKernel(kernel);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseKernel(cl_kernel kernel)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseKernel(kernel);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clSetKernelArg(cl_kernel kernel, cl_uint arg_index, size_t arg_size, const void * arg_value)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clSetKernelArg(kernel, arg_index, arg_size, arg_value);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetKernelInfo(cl_kernel kernel, cl_kernel_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetKernelInfo(kernel, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetKernelWorkGroupInfo(cl_kernel kernel, cl_device_id device, cl_kernel_work_group_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetKernelWorkGroupInfo(kernel, device, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clWaitForEvents(cl_uint num_events, const cl_event * event_list)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clWaitForEvents(num_events, event_list);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetEventInfo(cl_event event, cl_event_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	// tracepoint(openclTracer, function_entry, __func__, "opencl");
+	// tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetEventInfo(event, param_name, param_value_size, param_value, param_value_size_ret);
-	// tracepoint(openclTracer, function_exit, __func__, "opencl");
+	// tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_event clCreateUserEvent(cl_context context, cl_int * errcode_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_event ret = reallib_clCreateUserEvent(context, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clRetainEvent(cl_event event)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clRetainEvent(event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clReleaseEvent(cl_event event)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clReleaseEvent(event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clSetUserEventStatus(cl_event event, cl_int execution_status)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clSetUserEventStatus(event, execution_status);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clSetEventCallback(cl_event event, cl_int command_exec_callback_type, void (CL_CALLBACK * pfn_notify )(cl_event, cl_int, void *) , void * user_data)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clSetEventCallback(event, command_exec_callback_type, pfn_notify, user_data);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clGetEventProfilingInfo(cl_event event, cl_profiling_info param_name, size_t param_value_size, void * param_value, size_t * param_value_size_ret)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clGetEventProfilingInfo(event, param_name, param_value_size, param_value, param_value_size_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clFlush(cl_command_queue command_queue)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clFlush(command_queue);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clFinish(cl_command_queue command_queue)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clFinish(command_queue);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
@@ -785,9 +785,9 @@ cl_int clEnqueueReadBuffer(cl_command_queue command_queue, cl_mem buffer, cl_boo
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueReadBuffer(command_queue, buffer, blocking_read, offset, cb, ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -811,9 +811,9 @@ cl_int clEnqueueReadBufferRect(cl_command_queue command_queue, cl_mem buffer, cl
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueReadBufferRect(command_queue, buffer, blocking_read, buffer_origin, host_origin, region, buffer_row_pitch, buffer_slice_pitch, host_row_pitch, host_slice_pitch, ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -837,9 +837,9 @@ cl_int clEnqueueWriteBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bo
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueWriteBuffer(command_queue, buffer, blocking_write, offset, cb, ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -863,9 +863,9 @@ cl_int clEnqueueWriteBufferRect(cl_command_queue command_queue, cl_mem buffer, c
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueWriteBufferRect(command_queue, buffer, blocking_write, buffer_origin, host_origin, region, buffer_row_pitch, buffer_slice_pitch, host_row_pitch, host_slice_pitch, ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -889,9 +889,9 @@ cl_int clEnqueueCopyBuffer(cl_command_queue command_queue, cl_mem src_buffer, cl
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueCopyBuffer(command_queue, src_buffer, dst_buffer, src_offset, dst_offset, cb, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -915,9 +915,9 @@ cl_int clEnqueueCopyBufferRect(cl_command_queue command_queue, cl_mem src_buffer
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueCopyBufferRect(command_queue, src_buffer, dst_buffer, src_origin, dst_origin, region, src_row_pitch, src_slice_pitch, dst_row_pitch, dst_slice_pitch, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -941,9 +941,9 @@ cl_int clEnqueueReadImage(cl_command_queue command_queue, cl_mem image, cl_bool 
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueReadImage(command_queue, image, blocking_read, &origin, &region, row_pitch, slice_pitch, ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -967,9 +967,9 @@ cl_int clEnqueueWriteImage(cl_command_queue command_queue, cl_mem image, cl_bool
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueWriteImage(command_queue, image, blocking_write, &origin, &region, input_row_pitch, input_slice_pitch, ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -993,9 +993,9 @@ cl_int clEnqueueCopyImage(cl_command_queue command_queue, cl_mem src_image, cl_m
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueCopyImage(command_queue, src_image, dst_image, &src_origin, &dst_origin, &region, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1019,9 +1019,9 @@ cl_int clEnqueueCopyImageToBuffer(cl_command_queue command_queue, cl_mem src_ima
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueCopyImageToBuffer(command_queue, src_image, dst_buffer, &src_origin, &region, dst_offset, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1045,9 +1045,9 @@ cl_int clEnqueueCopyBufferToImage(cl_command_queue command_queue, cl_mem src_buf
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueCopyBufferToImage(command_queue, src_buffer, dst_image, src_offset, &dst_origin, &region, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1071,9 +1071,9 @@ void * clEnqueueMapBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bool
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	void * ret = reallib_clEnqueueMapBuffer(command_queue, buffer, blocking_map, map_flags, offset, cb, num_events_in_wait_list, event_wait_list, event, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1097,9 +1097,9 @@ void * clEnqueueMapImage(cl_command_queue command_queue, cl_mem image, cl_bool b
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	void * ret = reallib_clEnqueueMapImage(command_queue, image, blocking_map, map_flags, &origin, &region, image_row_pitch, image_slice_pitch, num_events_in_wait_list, event_wait_list, event, errcode_ret);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1123,9 +1123,9 @@ cl_int clEnqueueUnmapMemObject(cl_command_queue command_queue, cl_mem memobj, vo
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueUnmapMemObject(command_queue, memobj, mapped_ptr, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1156,9 +1156,9 @@ cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, 
 	incr_index(&write_index);
 
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueNDRangeKernel(command_queue, kernel, work_dim, global_work_offset, global_work_size, local_work_size, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1182,9 +1182,9 @@ cl_int clEnqueueTask(cl_command_queue command_queue, cl_kernel kernel, cl_uint n
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueTask(command_queue, kernel, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1208,9 +1208,9 @@ cl_int clEnqueueNativeKernel(cl_command_queue command_queue, void (*user_func)(v
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueNativeKernel(command_queue, user_func, args, cb_args, num_mem_objects, mem_list, args_mem_loc, num_events_in_wait_list, event_wait_list, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1234,9 +1234,9 @@ cl_int clEnqueueMarker(cl_command_queue command_queue, cl_event * event)  {
 		}
 	}
 
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueMarker(command_queue, event);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 
 	if(caa_unlikely(trace)) {
 		int r = reallib_clSetEventCallback(*event, CL_COMPLETE, &eventCompleted, (toDelete)?&ev_delete:&ev_keep);
@@ -1248,25 +1248,25 @@ cl_int clEnqueueMarker(cl_command_queue command_queue, cl_event * event)  {
 
 
 cl_int clEnqueueWaitForEvents(cl_command_queue command_queue, cl_uint num_events, const cl_event * event_list)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueWaitForEvents(command_queue, num_events, event_list);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 cl_int clEnqueueBarrier(cl_command_queue command_queue)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	cl_int ret = reallib_clEnqueueBarrier(command_queue);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 
 
 void * clGetExtensionFunctionAddress(const char * func_name)  {
-	tracepoint(openclTracer, function_entry, __func__, "opencl");
+	tracepoint(openclTracer, function_entry, "opencl", __func__);
 	void * ret = reallib_clGetExtensionFunctionAddress(func_name);
-	tracepoint(openclTracer, function_exit, __func__, "opencl");
+	tracepoint(openclTracer, function_exit, "opencl", __func__);
 	return ret;
 }
 

@@ -174,15 +174,15 @@ for r_event in collection.events:
         # if we have a kernel: change a field value (tf_name or name depending on the event) with the corresponding tf op
         if (f == "tf_name"\
             and\
-           (re.match(hcc_runtime_regex_1, name) or \
+            (re.match(hcc_runtime_regex_1, name) or \
             re.match(hcc_runtime_regex_2, name) or \
-            re.match(interceptionTracer_regex, name)\
-           )\
-           and\
-           "Memset" not in r_event["name"]\
-           )\
-           # new opencl case, that will be merge into the first case as soon as I will have a tf_name field in the event
-           or (f == "name" and re.match(opencl_kernel, name) and "Memset" not in r_event["name"]):
+            re.match(interceptionTracer_regex, name) or\
+            re.match(opencl_kernel, name)\
+            )\
+            and\
+            "Memset" not in r_event["name"]\
+            ):
+            print("Changed")
             if list_tf_op[cnt_kernel] != None:
                 # print(list_tf_op[cnt_kernel].begin_event["name"])
                 w_event.payload(f).value = list_tf_op[cnt_kernel].begin_event["name"]
