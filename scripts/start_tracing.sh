@@ -79,6 +79,7 @@ $is_sudo lttng enable-event --userspace "eigenTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hsaTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hcTracer:*" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "openclTracer:*" --channel=ustchannel
 
 $is_sudo lttng enable-event --userspace "streamTracer:*" --channel=ustchannel
 
@@ -95,7 +96,6 @@ $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --ch
 # $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_bins_stats" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
 $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "openclTracer:*" --channel=ustchannel
 
 
 

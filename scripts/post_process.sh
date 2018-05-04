@@ -48,7 +48,8 @@ if [ "$CUDA" == true ] || [ "$TF_NAME" != true ]
 then
     cp /tmp/tensorflow-profiler/* ../results/
 fi
-if [ -d "$DIRECTORY" ]; then
+
+if [ -d "../results/" ]; then
   if [ -z "$(ls -A ../results/)" ]; then
     echo "Results folder is empty"
   else

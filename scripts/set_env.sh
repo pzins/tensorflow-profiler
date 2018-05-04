@@ -21,19 +21,21 @@
 
 usage()
 {
-    echo "Usage: $0 [--hip] [--hc <int>[1-3]] [--hsa <int>[1-2]]
+    echo "Usage: $0 [--hip] [--hc <int>[1-3]] [--hsa <int>[1-2]] [--sycl]
             where:
-            --hip           : activate HIP API profiling
+            --hip       : activate HIP API profiling
             --hc=[1-3]  : 1 = set HSA_TOOLS_LIB and LD_PRELOAD environment variables
                           2 = set HCC_PROFILE environment variable : use HC instrumentation
                           3 = set HCC_PROFILE environment variable : use HC logs file
             --hsa=[1-2] : 1 = ...
+            --sycl      : activate OpenCL API profiling
 " 1>&2; exit 1; }
 
 
 while true; do
   case "$1" in
     --hip ) HIP=true; shift;;
+    --sycl ) SYCL=true; shift;;
     --hc ) HC="$2"; shift 2;;
     --hsa ) HSA="$2"; shift 2;;
     -h | --help ) usage; shift;;
@@ -46,6 +48,8 @@ done
 if [ -z "$HIP" ]; then HIP=false;fi
 if [ -z "$HC" ]; then HC=2;fi
 if [ -z "$HSA" ]; then HSA=1;fi
+if [ -z "$SYCL" ]; then SYCL=false;fi
+
 
 # echo $HIP
 # echo $HC
@@ -61,21 +65,28 @@ if [ "$HSA" -le 0 ] || [ "$HSA" -ge 3 ]; then
     exit 1;
 fi
 
-if [ "$HIP" == true ];
+if [ "$SYCL" == true ];
 then
-    echo "HIP_PROFILE_API"
-    export HIP_PROFILE_API=2
-fi
-
-
-if [ "$HC" == "1" ];
-then
-    echo "HSA_TOOLS_LIB"
-    export HSA_TOOLS_LIB="libhsa-runtime-tools64.so.1"
     echo "LD_PRELOAD"
     scripts_dir=`pwd`
-    export LD_PRELOAD="$scripts_dir/../interception-libraries/lib/hsa_kernel_times.so"
+    export LD_PRELOAD="$scripts_dir/../CLUST/src/.libs/libCLUST.so.0.0.0"
 else
-    echo "HCC_PROFILE"
-    export HCC_PROFILE=2
+    if [ "$HIP" == true ];
+    then
+        echo "HIP_PROFILE_API"
+        export HIP_PROFILE_API=2
+    fi
+
+
+    if [ "$HC" == "1" ];
+    then
+        echo "HSA_TOOLS_LIB"
+        export HSA_TOOLS_LIB="libhsa-runtime-tools64.so.1"
+        echo "LD_PRELOAD"
+        scripts_dir=`pwd`
+        export LD_PRELOAD="$scripts_dir/../interception-libraries/lib/hsa_kernel_times.so"
+    else
+        echo "HCC_PROFILE"
+        export HCC_PROFILE=2
+    fi
 fi

@@ -182,7 +182,6 @@ for r_event in collection.events:
             and\
             "Memset" not in r_event["name"]\
             ):
-            print("Changed")
             if list_tf_op[cnt_kernel] != None:
                 # print(list_tf_op[cnt_kernel].begin_event["name"])
                 w_event.payload(f).value = list_tf_op[cnt_kernel].begin_event["name"]
