@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-import babeltrace
-import babeltrace.reader as btr
-import babeltrace.writer as btw
-import re
 import argparse
 
 # parse arguments
@@ -11,19 +7,22 @@ parser.add_argument("--trace", help="set the input trace", required=True)
 parser.add_argument("--output", help="set the output csv file")
 args = parser.parse_args()
 
-
 if args.output == None:
     outfile = "stats.csv"
 else:
     outfile = args.output
 
+path = args.trace
+
+import babeltrace.reader as btr
+import babeltrace.writer as btw
 from tracing_events_classes import event_classes
 from collections import defaultdict
+import re
 # Add the input trace to the collection
 collection = btr.TraceCollection()
 
 # Set the input traces
-path = args.trace
 if path[-1] == "/":
     path = path[:-1]
 collection.add_trace(path, 'ctf')
@@ -79,9 +78,9 @@ class State():
 # define the modules we want
 modules = [
             Module("sessions", "tensorflowTracer:session_start", "tensorflowTracer:session_end", "count"),
-            Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            # Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name"),
             Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
-            Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name")
           ]
 
 # loop over the events

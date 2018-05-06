@@ -57,6 +57,17 @@
 					</condition>
 				</if>
 			</test>
+			<test id="test_threadid">
+				<if>
+					<condition>
+						<stateValue type="eventField" value="context._vtid"/>
+						<stateValue type="query">
+							<stateAttribute type="constant" value="#CurrentScenario" />
+							<stateAttribute type="constant" value="threadID" />
+						</stateValue>
+					</condition>
+				</if>
+			</test>
 			<test id="test_async_name">
 				<if>
 					<condition>
@@ -223,7 +234,7 @@
 			        <transition event="tensorflowTracer:session_start" target="loop" action="entering_thread:push_count"/>
 			    </state>
 			    <state id="loop">
-			        <transition event="tensorflowTracer:session_start" cond="test_category" target="loop" action="push_countpush_count" />
+			        <transition event="tensorflowTracer:session_start" cond="test_category" target="loop" action="push_count" />
 			        <transition event="tensorflowTracer:session_end" cond="test_category:last_out" target="end_thread" action="pop_count"/>
 			        <transition event="tensorflowTracer:session_end" cond="test_category" target="loop" action="pop_count" />
 			    </state>
@@ -234,9 +245,9 @@
 					<transition event="tensorflowTracer:operation_start" target="loop" action="entering_thread:push_name"/>
 				</state>
 				<state id="loop">
-					<transition event="tensorflowTracer:operation_start" cond="test_category" target="loop" action="push_name" />
-					<transition event="tensorflowTracer:operation_end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
-					<transition event="tensorflowTracer:operation_end" cond="test_category" target="loop" action="pop_name" />
+					<transition event="tensorflowTracer:operation_start" cond="test_category:test_threadid" target="loop" action="push_name" />
+					<transition event="tensorflowTracer:operation_end" cond="test_category:test_threadid:last_out" target="end_thread" action="pop_name"/>
+					<transition event="tensorflowTracer:operation_end" cond="test_category:test_threadid" target="loop" action="pop_name" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
