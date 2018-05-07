@@ -1,3 +1,6 @@
+<!-- Follow the filling of the HSA queues
+	Computation queue, and memory copies queues
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- ***************************************************************************
 * Copyright (c) 2014 École Polytechnique de Montréal

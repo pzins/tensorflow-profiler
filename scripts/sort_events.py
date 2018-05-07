@@ -265,42 +265,41 @@ if args.gpu_log != None:
 
 
 # If OpenCL event, synchronize events GPU / CPU times
+if len(callback_times) != 0:
+    # print("opencl_device_events", len(opencl_device_events))
+    # print("queued_times", len(queued_times))
+    # print("end_times", len(end_times))
+    # print("enqueueNDRangeKernel_times", len(enqueueNDRangeKernel_times))
+    # print("callback_times", len(callback_times))
+    assert((len(queued_times) == len(enqueueNDRangeKernel_times) == len(callback_times)))
 
+    # compute mean between CPU_EnqueuedCommand_time and GPU_kernel/device_queued
+    # compute mean between CPU_callback_time and GPU_kernel/device_end
+    mean_enqueue = 0
+    mean_callback = 0
+    for i in range(len(queued_times)):
+        mean_enqueue += enqueueNDRangeKernel_times[i] - queued_times[i]
+        mean_callback += callback_times[i] - end_times[i]
+    mean_enqueue /= len(queued_times)
+    mean_callback /= len(queued_times)
+    # print(mean_enqueue)
+    # print(mean_callback)
+    # Finally use the mean of both difference
+    diff = math.floor((mean_callback + mean_enqueue) / 2)
 
-# print("opencl_device_events", len(opencl_device_events))
-# print("queued_times", len(queued_times))
-# print("end_times", len(end_times))
-# print("enqueueNDRangeKernel_times", len(enqueueNDRangeKernel_times))
-# print("callback_times", len(callback_times))
-assert((len(queued_times) == len(enqueueNDRangeKernel_times) == len(callback_times)))
+    # Add the OpenCL kernels and device events
+    for r_event in opencl_device_events:
+        name = r_event.name
+        event_time = r_event.timestamp
+        fields = r_event.field_list_with_scope(babeltrace.common.CTFScope.EVENT_FIELDS)
+        w_event = btw.Event(event_classes[name])
 
-# compute mean between CPU_EnqueuedCommand_time and GPU_kernel/device_queued
-# compute mean between CPU_callback_time and GPU_kernel/device_end
-mean_enqueue = 0
-mean_callback = 0
-for i in range(len(queued_times)):
-    mean_enqueue += enqueueNDRangeKernel_times[i] - queued_times[i]
-    mean_callback += callback_times[i] - end_times[i]
-mean_enqueue /= len(queued_times)
-mean_callback /= len(queued_times)
-# print(mean_enqueue)
-# print(mean_callback)
-# Finally use the mean of both difference
-diff = math.floor((mean_callback + mean_enqueue) / 2)
+        for f in fields:
+            w_event.payload(f).value = r_event[f]
 
-# Add the OpenCL kernels and device events
-for r_event in opencl_device_events:
-    name = r_event.name
-    event_time = r_event.timestamp
-    fields = r_event.field_list_with_scope(babeltrace.common.CTFScope.EVENT_FIELDS)
-    w_event = btw.Event(event_classes[name])
-
-    for f in fields:
-        w_event.payload(f).value = r_event[f]
-
-    event_time = r_event["timestamp"] + diff
-    threadId = r_event.field_with_scope("vtid", babeltrace.common.CTFScope.STREAM_EVENT_CONTEXT)
-    events[event_time].append([w_event, threadId])
+            event_time = r_event["timestamp"] + diff
+            threadId = r_event.field_with_scope("vtid", babeltrace.common.CTFScope.STREAM_EVENT_CONTEXT)
+            events[event_time].append([w_event, threadId])
 
 
 # Append events to the stream
@@ -313,7 +312,6 @@ for timestamp in timestamps:
     for i in range(len(events[timestamp])):
         ev = events[timestamp][i][0]
         ev.tid(events[timestamp][i][1])
-        # print(timestamp)
         main_stream.append_event(ev)
 
 # Flush the stream

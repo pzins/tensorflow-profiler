@@ -62,6 +62,7 @@ class Kernel():
         return res[:-1] + "\n"
     
     def headerCsv(self):
+        res = ""
         for i in self.counters:
             res += i + ";"
         return res[:-1] + "\n"
@@ -96,8 +97,8 @@ for r_event in collection.events:
         kernel_in_session_cnt = 0
     elif "kernel" in name and "begin" in name:
         kernels_profile.append(KernelHeader(kernel_cnt, r_event["name"], \
-                            r_event.timestamp, kernel_in_session_cnt,\
-                            session_cnt))
+                            r_event.timestamp, session_cnt,\
+                            kernel_in_session_cnt))
         kernel_cnt += 1
         kernel_in_session_cnt += 1
         
