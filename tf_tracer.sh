@@ -85,7 +85,7 @@ then
 # need to stay after HC == 3 case because quiet mode will discard all the log
 elif [ "${quiet_mode}" == true ]
 then
-    python3 $tf_program_name $tf_program_args > /dev/null 2>&1
+    python3 $tf_program_name $tf_program_args 2> /dev/null
 else
     python3 $tf_program_name $tf_program_args
 fi
