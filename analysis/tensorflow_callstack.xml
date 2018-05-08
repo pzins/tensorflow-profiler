@@ -198,14 +198,14 @@
 			</action>
 			<action id="push_rendezvous_key">
 				<stateChange>
-						<stateAttribute type="location" value="CurrentThread" />
+						<stateAttribute type="location" value="CurrentThread_async" />
 						<stateAttribute type="constant" value="CallStack" />
 						<stateValue type="eventField" value="rendezvous_key" stack="push"/>
 				</stateChange>
 			</action>
 			<action id="pop_rendezvous_key">
 				<stateChange>
-						<stateAttribute type="location" value="CurrentThread" />
+						<stateAttribute type="location" value="CurrentThread_async" />
 						<stateAttribute type="constant" value="CallStack" />
 						<stateValue type="eventField" value="rendezvous_key" stack="pop"/>
 				</stateChange>
@@ -423,23 +423,23 @@
 			<!-- GRPC -->
 			<fsm id="call_stack_proto" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="grpcTracer:set_proto*_start" target="loop" action="entering_thread_key:push_name"/>
+					<transition event="grpcTracer:set_proto*_start" target="loop" action="entering_thread:push_name_async"/>
 				</state>
 				<state id="loop">
-					<transition event="grpcTracer:set_proto*_start" cond="test_rendezvous_key" target="loop" action="push_name" />
-					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key:last_out" target="end_thread" action="pop_name"/>
-					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key" target="loop" action="pop_name" />
+					<transition event="grpcTracer:set_proto*_start" cond="test_rendezvous_key" target="loop" action="push_name_async" />
+					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key:last_out_async" target="end_thread" action="pop_name_async"/>
+					<transition event="grpcTracer:set_proto*_end" cond="test_rendezvous_key" target="loop" action="pop_name_async" />
 				</state>
 				<final id="end_thread"/>
 			</fsm>
 
 			<fsm id="call_stack_grpc" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
-					<transition event="grpcTracer:*tensor_start" target="loop" action="entering_thread_key:push_rendezvous_key"/>
+					<transition event="grpcTracer:*tensor_start" target="loop" action="entering_thread:push_rendezvous_key"/>
 				</state>
 				<state id="loop">
 					<transition event="grpcTracer:*tensor_start" cond="test_rendezvous_key" target="loop" action="push_rendezvous_key"/>
-					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key:last_out" target="end_thread" action="pop_rendezvous_key"/>
+					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key:last_out_async" target="end_thread" action="pop_rendezvous_key"/>
 					<transition event="grpcTracer:*tensor_end" cond="test_rendezvous_key" target="loop" action="pop_rendezvous_key"/>
 				</state>
 				<final id="end_thread"/>

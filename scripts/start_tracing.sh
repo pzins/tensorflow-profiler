@@ -108,7 +108,7 @@ if [ "${python_tracing}" == "True" ]; then
     $is_sudo lttng enable-event --python my-end-logger
 fi
 
-$is_sudo lttng add-context -u -t vtid
-# $is_sudo lttng add-context -k -t vtid
+$is_sudo lttng add-context -u -t vtid --channel=ustchannel
+$is_sudo lttng add-context -k -t vtid --channel=kernelchannel
 
 $is_sudo lttng start

@@ -27,15 +27,15 @@ fi
 scripts_dir=`pwd`
 
 # set the environment
-bash set_env.sh --hip --hc 2
-
+source set_env.sh --hip --hc 2
 # start tracing
 bash start_tracing.sh -g
 
 # go to TensorFlow script and start the program
 tf_program_dir=`dirname "$tf_program_name"`
 cd $tf_program_dir
-python3 $tf_program_name m
+# python3 $tf_program_name m
+python3 $tf_program_name m 2> /dev/null
 # python3 $tf_program_name m > /dev/null 2>&1
 
 # get the pid of the python script on the worker and kill it

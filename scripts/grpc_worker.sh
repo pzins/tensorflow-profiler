@@ -27,7 +27,7 @@ fi
 scripts_dir=`pwd`
 
 # set the environment
-bash set_env.sh --hip --hc 2
+source set_env.sh --hip --hc 2
 
 # start tracing
 bash start_tracing.sh -g
@@ -37,7 +37,8 @@ tf_program_dir=`dirname "$tf_program_name"`
 cd $tf_program_dir
 
 # python3 $tf_program_name w
-python3 $tf_program_name w > /dev/null 2>&1
+python3 $tf_program_name w 2> /dev/null
+# python3 $tf_program_name w > /dev/null 2>&1
 
 # go to scripts directory
 cd $scripts_dir

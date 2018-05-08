@@ -21,6 +21,7 @@ $is_sudo lttng destroy
 
 if [ "$is_sudo" == "sudo" ];
 then
-    echo "sudo chown -R `whoami` ../lttng-traces"
-    sudo chown -R `whoami` ../lttng-traces
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../lttng-traces
+    echo "sudo chown -R `whoami` $DIR"
+    sudo chown -R `whoami` $DIR
 fi
