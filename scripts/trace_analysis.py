@@ -74,13 +74,15 @@ class State():
         if self.begin_event == 0:
             return False
         return self.begin_event[unique_id] == end_event[unique_id]
-
+    def duration(self):
+        return self.timestamps[1] - self.timestamps[0]
+    
 # define the modules we want
 modules = [
             Module("sessions", "tensorflowTracer:session_start", "tensorflowTracer:session_end", "count"),
-            # Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
             Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name"),
-            Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
+            # Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
           ]
 
 # loop over the events
@@ -121,23 +123,49 @@ for mod in modules:
 
 
 
+# we want to skip the first 2 sessions
+# The first session run is Variable initilization
+# The second session run is longer because of GPU initilization, kernel compilation, ...
 skip_sessions = [1, 2]
 with open(outfile, "w") as f:
     # print
     f.write("begin_timestamp;end_timestamp;name;duration;session\n")
     for mod in modules:
+        f.write("MODULE;" + mod.name + "\n")
+        # if ROCm platform, we want to use tf_name, not real GPU kernels name
+        # if CUDA : name is already TensorFlow Op name, so directly use "name" field
+        name_field = "name"
+        if "hip_kernels" in mod.name:
+            name_field = "tf_name"
+        
+        mean_values = {} # dict to store all the events, grouped by name
         f.write("\n\n")
+        
         for i in mod.states:
+            
+            # skip some session runs
             if i.session in skip_sessions:
                 continue
-            if "hip_kernels" in mod.name:
-                f.write(str(i.timestamps[0]) + ";" + str(i.timestamps[1]) + ";"\
-                        + i.begin_event["tf_name"] + ";" + str(i.timestamps[1]\
-                        - i.timestamps[0]) + ";" + str(i.session) + "\n")
-                # print(i.timestamps, i.begin_event["tf_name"], i.timestamps[1] - i.timestamps[0])
-            else:
-                f.write(str(i.timestamps[0]) + ";" + str(i.timestamps[1]) + ";"\
-                        + i.begin_event["name"] + ";" + str(i.timestamps[1] - \
+            
+            # write an entry
+            f.write(str(i.timestamps[0]) + ";" + str(i.timestamps[1]) + ";"\
+                        + i.begin_event[name_field] + ";" + str(i.timestamps[1] - \
                         i.timestamps[0]) + ";" + str(i.session) + "\n")
-                # print(i.timestamps, i.begin_event["name"], i.timestamps[1] - i.timestamps[0])
-            # input()
+            
+            # update the mean value for each event
+            # first time we envounter this event
+            if i.begin_event[name_field] not in mean_values:
+                mean_values[i.begin_event[name_field]] = (i.duration(), 1)
+            # we already have envountered this event, so update the mean
+            else:
+                mean_values[i.begin_event[name_field]] = \
+                            ((mean_values[i.begin_event[name_field]][0] * mean_values[i.begin_event[name_field]][1] + i.duration())\
+                            / (mean_values[i.begin_event[name_field]][1] + 1), \
+                            mean_values[i.begin_event[name_field]][1] + 1)
+        
+        # write all the events, each event is unique and the duration is a mean
+        f.write("\n")
+        res = sorted(mean_values, key=mean_values.__getitem__, reverse=True)
+        for i in res:
+            f.write(";;" + i + ";" + str(mean_values[i][0]) + ";" + str(mean_values[i][1]) + "\n")
+        f.write("\n\n\n")

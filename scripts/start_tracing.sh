@@ -70,6 +70,7 @@ if [ "${is_sudo}" == "sudo" ]; then
             $is_sudo lttng enable-event -k net_dev_queue --channel=kernelchannel
             $is_sudo lttng enable-event -k net_if_receive_skb --channel=kernelchannel
         fi
+        $is_sudo lttng add-context -k -t vtid --channel=kernelchannel
 fi
 $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --subbuf-size=${subbuff_size_ust}
 
@@ -109,6 +110,5 @@ if [ "${python_tracing}" == "True" ]; then
 fi
 
 $is_sudo lttng add-context -u -t vtid --channel=ustchannel
-$is_sudo lttng add-context -k -t vtid --channel=kernelchannel
 
 $is_sudo lttng start
