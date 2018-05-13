@@ -1,26 +1,24 @@
 # Tensorflow profiler
-## Tracing and profiling tool for TensorFlow
-
+Tracing and profiling tool for TensorFlow.
 Support CUDA, HIP and SYCL TensorFlow
 
 # Requirements
-Install LTTng : https://lttng.org/
-Install Babeltrace and python bindings : https://github.com/pzins/babeltrace (checkout branch "conversion_atp_to_ctf")
+- Install LTTng : https://lttng.org/
+- Install Babeltrace and python bindings : https://github.com/pzins/babeltrace (checkout branch "conversion_atp_to_ctf")
 
 # Building the tracers
-1. Go to tracers
-2. make
+1. Go to tracers folder
+2. `make`
 
 # Installing TensorFlow
 The first step is to install an instrumented version of TensorFlow;
-TensorFlow 1.6 CUDA : https://github.com/pzins/tensorflow
-TensorFlow 1.3 HIP/ROCM : https://github.com/pzins/tensorflow-rocm
-TensorFlow 1.0 HIP/ROCM : https://github.com/pzins/hiptensorflow
-TensorFlow 1.6 SYCL : https://github.com/pzins/tensorflow-sycl
+- TensorFlow 1.6 CUDA : https://github.com/pzins/tensorflow
+- TensorFlow 1.3 HIP/ROCM : https://github.com/pzins/tensorflow-rocm
+- TensorFlow 1.0 HIP/ROCM : https://github.com/pzins/hiptensorflow
+- TensorFlow 1.6 SYCL : https://github.com/pzins/tensorflow-sycl
 
-you need to checkout __lttng__ branch
-
-Follow the classic instructions to build TensorFlow.
+1. you need to checkout __lttng__ branch
+2. Follow the classic instructions to build TensorFlow.
 
 # Tracing API
 ## TensorFlow with CUDA
