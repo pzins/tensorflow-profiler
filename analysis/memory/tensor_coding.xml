@@ -1,7 +1,6 @@
-<!-- Display all the tensor encoding before transfer with GRPC
-	for distributed TensorFlow
--->
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Display all the tensor encoding before transfer with GRPC
+for distributed TensorFlow -->
 <!-- ***************************************************************************
 * Copyright (c) 2014 École Polytechnique de Montréal
 *

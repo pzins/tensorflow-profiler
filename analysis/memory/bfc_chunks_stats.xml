@@ -1,7 +1,6 @@
-<!-- stats of the chunks of the allocator, GPU and CPU
-	chunk : portion of memory allocated of specific size
- -->
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- stats of the chunks of the allocator, GPU and CPU
+chunk : portion of memory allocated of specific size -->
 <!-- ***************************************************************************
 * Copyright (c) 2014 École Polytechnique de Montréal
 *

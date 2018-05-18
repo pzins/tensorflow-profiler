@@ -1,6 +1,5 @@
-<!-- cuda_driver.cc : Follow all the allocations performed by the cuda driver -->
-
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- cuda_driver.cc : Follow all the allocations performed by the cuda driver -->
 <!-- ***************************************************************************
 * Copyright (c) 2014 École Polytechnique de Montréal
 *

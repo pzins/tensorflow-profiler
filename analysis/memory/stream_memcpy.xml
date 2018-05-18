@@ -1,5 +1,5 @@
-<!-- Follow all the memory copies through the stream inside TensorFlow -->
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Follow all the memory copies through the stream inside TensorFlow -->
 <!-- ***************************************************************************
 * Copyright (c) 2014 École Polytechnique de Montréal
 *
