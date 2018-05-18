@@ -12010,8 +12010,8 @@ CC=$lt_save_CC
 
 
 for ac_header in  \
-	sys/types.h unistd.h fcntl.h strings.h pthread.h time.h \
-	errno.h stdarg.h limits.h signal.h stdlib.h
+				  	sys/types.h unistd.h fcntl.h strings.h pthread.h time.h \
+						errno.h stdarg.h limits.h signal.h stdlib.h
 
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
