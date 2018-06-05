@@ -280,6 +280,15 @@ event_classes['streamTracer:memcpy_end'] = btw.EventClass('streamTracer:memcpy_e
 event_classes['streamTracer:memcpy_end'].add_field(string_fd, 'cat')
 event_classes['streamTracer:memcpy_end'].add_field(string_fd, 'name')
 
+
+event_classes['testTracer:start'] = btw.EventClass('testTracer:start')
+event_classes['testTracer:start'].add_field(string_fd, 'cat')
+event_classes['testTracer:start'].add_field(string_fd, 'name')
+event_classes['testTracer:end'] = btw.EventClass('testTracer:end')
+event_classes['testTracer:end'].add_field(string_fd, 'cat')
+event_classes['testTracer:end'].add_field(string_fd, 'name')
+
+
 # hcTracer
 event_classes['hcTracer:kernel_begin'] = btw.EventClass('hcTracer:kernel_begin')
 event_classes['hcTracer:kernel_begin'].add_field(string_fd, 'cat')

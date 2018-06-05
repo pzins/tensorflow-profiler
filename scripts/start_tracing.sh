@@ -74,30 +74,49 @@ if [ "${is_sudo}" == "sudo" ]; then
 fi
 $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --subbuf-size=${subbuff_size_ust}
 
-$is_sudo lttng enable-event --userspace "cudaTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "interceptionTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "eigenTracer:*" --channel=ustchannel
+# === manual tensorflow events ===
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:process*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:inline_ready*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:push_succ*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:session*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:*operation*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:rdv*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "streamTracer:*" --channel=ustchannel
+
+# === CUDA all events ===
+# $is_sudo lttng enable-event --userspace "cudaTracer:*" --channel=ustchannel
+
+# === CUDA API events ===
+# $is_sudo lttng enable-event --userspace "cudaTracer:*entry*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "cudaTracer:*exit*" --channel=ustchannel
+
+# === CUDA GPU related events ===
+# $is_sudo lttng enable-event --userspace "cudaTracer:*begin" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "cudaTracer:*end" --channel=ustchannel
+
+# === ROCm interception ===
+# $is_sudo lttng enable-event --userspace "interceptionTracer:*" --channel=ustchannel
+
+# === ROCm HC ===
+# $is_sudo lttng enable-event --userspace "hcTracer:*" --channel=ustchannel
+
+# === ROCm API HSA ===
 $is_sudo lttng enable-event --userspace "hsaTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "hcTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "openclTracer:*" --channel=ustchannel
 
-$is_sudo lttng enable-event --userspace "streamTracer:*" --channel=ustchannel
+# === ROCm API HIP ===
+# $is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
 
-# TensorFlow enable events
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:process*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:inline_ready*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:push_succ*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:session*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:*operation*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:rdv*" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
+# === OpenCL API ===
+# $is_sudo lttng enable-event --userspace "openclTracer:*" --channel=ustchannel
+
+
+# === Skipped events ===
 # $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_bins_stats" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
-$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
-
+# $is_sudo lttng enable-event --userspace "testTracer:*" --channel=ustchannel
 
 
 if [ "${grpc_tracing}" == "True" ]; then
