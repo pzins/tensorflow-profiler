@@ -211,7 +211,7 @@ if args.gpu_log != None:
     threadId = 181818
     for i in hc_kernels:
         w_event = btw.Event(event_classes["hcTracer:kernel_log_begin"])
-        w_event.payload("cat").value = "hcc_kernel"
+        w_event.payload("cat").value = "hc_kernel"
         w_event.payload("name").value = i[0]
         w_event.payload("tf_name").value = ""
         w_event.payload("id").value = i[4]
@@ -219,7 +219,7 @@ if args.gpu_log != None:
         events[i[2]].append([w_event, threadId])
 
         w_event = btw.Event(event_classes["hcTracer:kernel_log_end"])
-        w_event.payload("cat").value = "hcc_kernel"
+        w_event.payload("cat").value = "hc_kernel"
         w_event.payload("name").value = i[0]
         w_event.payload("tf_name").value = ""
         w_event.payload("id").value = i[4]
@@ -228,14 +228,14 @@ if args.gpu_log != None:
 
     for i in hc_barrier:
         w_event = btw.Event(event_classes["hcTracer:barrier_log_begin"])
-        w_event.payload("cat").value = "hcc_barrier"
+        w_event.payload("cat").value = "hc_barrier"
         w_event.payload("name").value = i[0]
         w_event.payload("id").value = i[4]
         w_event.payload("timestamp").value = i[2]
         events[i[2]].append([w_event, threadId])
 
         w_event = btw.Event(event_classes["hcTracer:barrier_log_end"])
-        w_event.payload("cat").value = "hcc_barrier"
+        w_event.payload("cat").value = "hc_barrier"
         w_event.payload("name").value = i[0]
         w_event.payload("id").value = i[4]
         w_event.payload("timestamp").value = i[3]
@@ -249,7 +249,7 @@ if args.gpu_log != None:
             w_event_begin = btw.Event(event_classes["hcTracer:async_memcpyslo_log_begin"])
             w_event_end = btw.Event(event_classes["hcTracer:async_memcpyslo_log_end"])
 
-        w_event_begin.payload("cat").value = "hcc_copy"
+        w_event_begin.payload("cat").value = "hc_copy"
         w_event_begin.payload("name").value = i[1]
         w_event_begin.payload("timestamp").value = i[4]
         w_event_begin.payload("size_bytes").value = i[5]
@@ -257,7 +257,7 @@ if args.gpu_log != None:
         w_event_begin.payload("throughput").value = i[7]
         events[i[3]].append([w_event_begin, threadId])
 
-        w_event_end.payload("cat").value = "hcc_copy"
+        w_event_end.payload("cat").value = "hc_copy"
         w_event_end.payload("name").value = i[1]
         w_event_end.payload("timestamp").value = i[4]
         events[i[4]].append([w_event_end, threadId])

@@ -76,13 +76,13 @@ class State():
         return self.begin_event[unique_id] == end_event[unique_id]
     def duration(self):
         return self.timestamps[1] - self.timestamps[0]
-    
+
 # define the modules we want
 modules = [
             Module("sessions", "tensorflowTracer:session_start", "tensorflowTracer:session_end", "count"),
-            Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            # Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
             Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name"),
-            # Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
+            Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
           ]
 
 # loop over the events
@@ -111,6 +111,7 @@ for r_event in collection.events:
             # if no waiting state correspond to an end event. Not possible, so
             # we have errors
             if matching_index == -1:
+                print(name)
                 print("Error no matching event, for this end")
                 exit(1)
 
@@ -137,21 +138,21 @@ with open(outfile, "w") as f:
         name_field = "name"
         if "hip_kernels" in mod.name:
             name_field = "tf_name"
-        
+
         mean_values = {} # dict to store all the events, grouped by name
         f.write("\n\n")
-        
+
         for i in mod.states:
-            
+
             # skip some session runs
             if i.session in skip_sessions:
                 continue
-            
+
             # write an entry
             f.write(str(i.timestamps[0]) + ";" + str(i.timestamps[1]) + ";"\
                         + i.begin_event[name_field] + ";" + str(i.timestamps[1] - \
                         i.timestamps[0]) + ";" + str(i.session) + "\n")
-            
+
             # update the mean value for each event
             # first time we envounter this event
             if i.begin_event[name_field] not in mean_values:
@@ -162,7 +163,7 @@ with open(outfile, "w") as f:
                             ((mean_values[i.begin_event[name_field]][0] * mean_values[i.begin_event[name_field]][1] + i.duration())\
                             / (mean_values[i.begin_event[name_field]][1] + 1), \
                             mean_values[i.begin_event[name_field]][1] + 1)
-        
+
         # write all the events, each event is unique and the duration is a mean
         f.write("\n")
         res = sorted(mean_values, key=mean_values.__getitem__, reverse=True)

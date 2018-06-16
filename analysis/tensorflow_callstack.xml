@@ -211,7 +211,18 @@
 				</stateChange>
 			</action>
 
-
+			<!-- test -->
+			<fsm id="test" multiple="true" initial="Wait_thread_start">
+				<state id="Wait_thread_start">
+					<transition event="testTracer:start" target="loop" action="entering_thread:push_name"/>
+				</state>
+				<state id="loop">
+					<transition event="testTracer:start" cond="test_category" target="loop" action="push_name" />
+					<transition event="testTracer:end" cond="test_category:last_out" target="end_thread" action="pop_name"/>
+					<transition event="testTracer:end" cond="test_category" target="loop" action="pop_name" />
+				</state>
+				<final id="end_thread"/>
+			</fsm>
 
 
 <!-- ================================= FSM ================================= -->
