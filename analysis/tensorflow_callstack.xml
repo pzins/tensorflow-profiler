@@ -211,8 +211,8 @@
 				</stateChange>
 			</action>
 
-			<!-- test -->
-			<fsm id="test" multiple="true" initial="Wait_thread_start">
+
+			<fsm id="call_stack_test" multiple="true" initial="Wait_thread_start">
 				<state id="Wait_thread_start">
 					<transition event="testTracer:start" target="loop" action="entering_thread:push_name"/>
 				</state>
@@ -223,7 +223,6 @@
 				</state>
 				<final id="end_thread"/>
 			</fsm>
-
 
 <!-- ================================= FSM ================================= -->
 			<!-- API -->

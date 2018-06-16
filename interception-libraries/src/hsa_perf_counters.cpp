@@ -118,7 +118,7 @@ void read_gpa_counters(gpa_uint32 session_id)
 
 void gpa_logging_callback(GPA_Logging_Type logging_type, const char* message)
 {
-    std::cout << "[GPA log] " << message << std::endl;
+    // std::cout << "[GPA log] " << message << std::endl;
 }
 
 hsa_status_t hsa_init()
@@ -143,9 +143,9 @@ hsa_status_t HSA_API
     decltype(hsa_queue_create) *orig = (decltype(hsa_queue_create)*) dlsym(RTLD_NEXT, "hsa_queue_create");
     hsa_status_t retval = orig(agent, size, type, callback, data, private_segment_size, group_segment_size, queue);
 
-    printf("%d\n", retval);
+    // printf("%d\n", retval);
     hsa_status_t s = hsa_ext_tools_set_callback_functions(*queue, pre_dispatch_callback, post_dispatch_callback);
-    printf("%d\n", s==HSA_STATUS_SUCCESS);
+    // printf("%d\n", s==HSA_STATUS_SUCCESS);
     return retval;
 }
 
