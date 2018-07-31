@@ -773,7 +773,7 @@ cl_int clFinish(cl_command_queue command_queue)  {
 
 
 cl_int clEnqueueReadBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bool blocking_read, size_t offset, size_t cb, void * ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -799,7 +799,7 @@ cl_int clEnqueueReadBuffer(cl_command_queue command_queue, cl_mem buffer, cl_boo
 
 
 cl_int clEnqueueReadBufferRect(cl_command_queue command_queue, cl_mem buffer, cl_bool blocking_read, const size_t * buffer_origin, const size_t * host_origin, const size_t * region, size_t buffer_row_pitch, size_t buffer_slice_pitch, size_t host_row_pitch, size_t host_slice_pitch, void * ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -825,7 +825,7 @@ cl_int clEnqueueReadBufferRect(cl_command_queue command_queue, cl_mem buffer, cl
 
 
 cl_int clEnqueueWriteBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bool blocking_write, size_t offset, size_t cb, const void * ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -851,7 +851,7 @@ cl_int clEnqueueWriteBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bo
 
 
 cl_int clEnqueueWriteBufferRect(cl_command_queue command_queue, cl_mem buffer, cl_bool blocking_write, const size_t * buffer_origin, const size_t * host_origin, const size_t * region, size_t buffer_row_pitch, size_t buffer_slice_pitch, size_t host_row_pitch, size_t host_slice_pitch, const void * ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -877,7 +877,7 @@ cl_int clEnqueueWriteBufferRect(cl_command_queue command_queue, cl_mem buffer, c
 
 
 cl_int clEnqueueCopyBuffer(cl_command_queue command_queue, cl_mem src_buffer, cl_mem dst_buffer, size_t src_offset, size_t dst_offset, size_t cb, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -903,7 +903,7 @@ cl_int clEnqueueCopyBuffer(cl_command_queue command_queue, cl_mem src_buffer, cl
 
 
 cl_int clEnqueueCopyBufferRect(cl_command_queue command_queue, cl_mem src_buffer, cl_mem dst_buffer, const size_t * src_origin, const size_t * dst_origin, const size_t * region, size_t src_row_pitch, size_t src_slice_pitch, size_t dst_row_pitch, size_t dst_slice_pitch, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -929,7 +929,7 @@ cl_int clEnqueueCopyBufferRect(cl_command_queue command_queue, cl_mem src_buffer
 
 
 cl_int clEnqueueReadImage(cl_command_queue command_queue, cl_mem image, cl_bool blocking_read, const size_t * origin, const size_t * region, size_t row_pitch, size_t slice_pitch, void * ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -955,7 +955,7 @@ cl_int clEnqueueReadImage(cl_command_queue command_queue, cl_mem image, cl_bool 
 
 
 cl_int clEnqueueWriteImage(cl_command_queue command_queue, cl_mem image, cl_bool blocking_write, const size_t * origin, const size_t * region, size_t input_row_pitch, size_t input_slice_pitch, const void * ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -981,7 +981,7 @@ cl_int clEnqueueWriteImage(cl_command_queue command_queue, cl_mem image, cl_bool
 
 
 cl_int clEnqueueCopyImage(cl_command_queue command_queue, cl_mem src_image, cl_mem dst_image, const size_t * src_origin, const size_t * dst_origin, const size_t * region, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1007,7 +1007,7 @@ cl_int clEnqueueCopyImage(cl_command_queue command_queue, cl_mem src_image, cl_m
 
 
 cl_int clEnqueueCopyImageToBuffer(cl_command_queue command_queue, cl_mem src_image, cl_mem dst_buffer, const size_t * src_origin, const size_t * region, size_t dst_offset, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1033,7 +1033,7 @@ cl_int clEnqueueCopyImageToBuffer(cl_command_queue command_queue, cl_mem src_ima
 
 
 cl_int clEnqueueCopyBufferToImage(cl_command_queue command_queue, cl_mem src_buffer, cl_mem dst_image, size_t src_offset, const size_t * dst_origin, const size_t * region, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1059,7 +1059,7 @@ cl_int clEnqueueCopyBufferToImage(cl_command_queue command_queue, cl_mem src_buf
 
 
 void * clEnqueueMapBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bool blocking_map, cl_map_flags map_flags, size_t offset, size_t cb, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event, cl_int * errcode_ret)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1085,7 +1085,7 @@ void * clEnqueueMapBuffer(cl_command_queue command_queue, cl_mem buffer, cl_bool
 
 
 void * clEnqueueMapImage(cl_command_queue command_queue, cl_mem image, cl_bool blocking_map, cl_map_flags map_flags, const size_t * origin, const size_t * region, size_t * image_row_pitch, size_t * image_slice_pitch, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event, cl_int * errcode_ret)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1111,7 +1111,7 @@ void * clEnqueueMapImage(cl_command_queue command_queue, cl_mem image, cl_bool b
 
 
 cl_int clEnqueueUnmapMemObject(cl_command_queue command_queue, cl_mem memobj, void * mapped_ptr, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1137,7 +1137,7 @@ cl_int clEnqueueUnmapMemObject(cl_command_queue command_queue, cl_mem memobj, vo
 
 
 cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, cl_uint work_dim, const size_t * global_work_offset, const size_t * global_work_size, const size_t * local_work_size, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1149,11 +1149,11 @@ cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, 
 		}
 	}
 
-	char name[1024];
-	size_t real_size = 0;
-	cl_int res = reallib_clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * KERNEL_NAME_SIZE, name, &real_size);
-	strcpy(*(kernel_name+write_index), name);
-	incr_index(&write_index);
+	// char name[1024];
+	// size_t real_size = 0;
+	// cl_int res = reallib_clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(char) * KERNEL_NAME_SIZE, name, &real_size);
+	// strcpy(*(kernel_name+write_index), name);
+	// incr_index(&write_index);
 
 
 	tracepoint(openclTracer, function_entry, "opencl", __func__);
@@ -1170,7 +1170,7 @@ cl_int clEnqueueNDRangeKernel(cl_command_queue command_queue, cl_kernel kernel, 
 
 
 cl_int clEnqueueTask(cl_command_queue command_queue, cl_kernel kernel, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1196,7 +1196,7 @@ cl_int clEnqueueTask(cl_command_queue command_queue, cl_kernel kernel, cl_uint n
 
 
 cl_int clEnqueueNativeKernel(cl_command_queue command_queue, void (*user_func)(void *) , void * args, size_t cb_args, cl_uint num_mem_objects, const cl_mem * mem_list, const void ** args_mem_loc, cl_uint num_events_in_wait_list, const cl_event * event_wait_list, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
@@ -1222,7 +1222,7 @@ cl_int clEnqueueNativeKernel(cl_command_queue command_queue, void (*user_func)(v
 
 
 cl_int clEnqueueMarker(cl_command_queue command_queue, cl_event * event)  {
-	const bool trace = __tracepoint_openclTracer___clust_device_event.state;
+	const bool trace = 1;
 	bool toDelete = false;
 	if(caa_unlikely(trace)) {
 		if(event == NULL) {
