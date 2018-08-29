@@ -75,17 +75,17 @@ fi
 $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --subbuf-size=${subbuff_size_ust}
 
 # === manual tensorflow events ===
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:process*" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:inline_ready*" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:push_succ*" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:session*" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:*operation*" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:rdv*" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
-# $is_sudo lttng enable-event --userspace "streamTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:process*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:inline_ready*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:push_succ*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:session*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:*operation*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:rdv*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "streamTracer:*" --channel=ustchannel
 
 # === CUDA all events ===
 # $is_sudo lttng enable-event --userspace "cudaTracer:*" --channel=ustchannel
@@ -99,7 +99,7 @@ $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --su
 # $is_sudo lttng enable-event --userspace "cudaTracer:*end" --channel=ustchannel
 
 # === ROCm interception ===
-# $is_sudo lttng enable-event --userspace "interceptionTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "interceptionTracer:*" --channel=ustchannel
 
 # === ROCm HC ===
 # $is_sudo lttng enable-event --userspace "hcTracer:*" --channel=ustchannel
@@ -108,11 +108,14 @@ $is_sudo lttng enable-channel -u ustchannel --num-subbuf=${num_subbuff_ust} --su
 $is_sudo lttng enable-event --userspace "hsaTracer:*" --channel=ustchannel
 
 # === ROCm API HIP ===
-# $is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "hipTracer:*" --channel=ustchannel
 
 # === OpenCL API ===
-# $is_sudo lttng enable-event --userspace "openclTracer:*" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "openclTracer:*_entry" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "openclTracer:*_exit" --channel=ustchannel
 
+# === OpenCL GPU events ===
+# $is_sudo lttng enable-event --userspace "openclTracer:*" --channel=ustchannel
 
 # === Skipped events ===
 # $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_bins_stats" --channel=ustchannel

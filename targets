@@ -1,0 +1,18 @@
+dataflow
+$is_sudo lttng enable-event --userspace "tensorflowTracer:process*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:inline_ready*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:push_succ*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:session*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:*operation*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:rdv*" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_allocator_stats" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_chunks_stats" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "tensorflowTracer:bfc_bins_stats" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_allocate" --channel=ustchannel
+$is_sudo lttng enable-event --userspace "tensorflowTracer:memory_deallocate" --channel=ustchannel
+# $is_sudo lttng enable-event --userspace "testTracer:*" --channel=ustchannel
+
+
+
+
+

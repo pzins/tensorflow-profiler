@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import numpy as np
 
 # parse arguments
 parser = argparse.ArgumentParser(description="Compute statistics")
@@ -79,10 +80,10 @@ class State():
     
 # define the modules we want
 modules = [
-            Module("sessions", "tensorflowTracer:session_start", "tensorflowTracer:session_end", "count"),
-            Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
-            Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name"),
-            # Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
+            # Module("sessions", "tensorflowTracer:session_start", "tensorflowTracer:session_end", "count"),
+            # Module("hip_kernels", "hcTracer:kernel_begin", "hcTracer:kernel_end", "name"),
+            # Module("operations", "tensorflowTracer:operation_start", "tensorflowTracer:operation_end", "name"),
+            Module("cuda_kernels", "cudaTracer:kernel_begin", "cudaTracer:kernel_end", "name"),
           ]
 
 # loop over the events
@@ -122,6 +123,13 @@ for mod in modules:
     mod.states.sort(key=lambda x: x.timestamps[1] - x.timestamps[0], reverse=True)
 
 
+# Additional datatructure to store all the durations for each elements
+# to compute the standard deviation
+# the values could also give the mean for each operation and could replace my running
+# mean
+# ONLY WORKS IF ONLY 1 MODULE IS USED
+elements_duration = defaultdict(list)
+
 
 # we want to skip the first 2 sessions
 # The first session run is Variable initilization
@@ -142,10 +150,10 @@ with open(outfile, "w") as f:
         f.write("\n\n")
         
         for i in mod.states:
-            
             # skip some session runs
             if i.session in skip_sessions:
                 continue
+            elements_duration[i.begin_event[name_field]].append(i.duration())
             
             # write an entry
             f.write(str(i.timestamps[0]) + ";" + str(i.timestamps[1]) + ";"\
@@ -169,3 +177,14 @@ with open(outfile, "w") as f:
         for i in res:
             f.write(";;" + i + ";" + str(mean_values[i][0]) + ";" + str(mean_values[i][1]) + "\n")
         f.write("\n\n\n")
+        
+        
+        for i in elements_duration:
+            # print(i, elements_duration[i])
+            # print(np.std(elements_duration[i]))
+            f.write(";;" + i + ";" + str(np.std(elements_duration[i])) + ";" + \
+                        str(np.mean(elements_duration[i])) + ";" + \
+                        str(len(elements_duration[i])) + "\n")
+
+
+

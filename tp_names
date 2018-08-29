@@ -1,0 +1,115 @@
+openclTracer:function_entry
+openclTracer:function_exit
+openclTracer:callback
+openclTracer:kernel_queued
+openclTracer:kernel_submitted
+openclTracer:kernel_begin
+openclTracer:kernel_end
+openclTracer:device_queued
+openclTracer:device_submitted
+openclTracer:device_begin
+openclTracer:device_end
+
+# interceptionTracer
+interceptionTracer:kernel_begin
+interceptionTracer:kernel_end
+interceptionTracer:runtime_initialized
+interceptionTracer:runtime_shut_down
+interceptionTracer:queue_created
+interceptionTracer:queue_destroyed
+interceptionTracer:aql_packet_submitted
+interceptionTracer:aql_kernel_dispatch_packet_submitted
+interceptionTracer:kernel_parameters
+interceptionTracer:perf_counter_uint32
+interceptionTracer:perf_counter_uint64
+interceptionTracer:perf_counter_float32
+interceptionTracer:perf_counter_float64
+
+# hsaTracer
+hsaTracer:function_entry
+hsaTracer:function_exit
+hsaTracer:pool_memory_allocate
+hsaTracer:pool_memory_free
+
+# hipTracer
+hipTracer:function_entry
+hipTracer:function_exit
+
+# grpcTracer
+grpcTracer:EncodeRecvTensorResponseToByteBuffer
+grpcTracer:EncodeTensorToByteBuffer
+grpcTracer:receive_request
+grpcTracer:send_request
+grpcTracer:receive_RecvTensor_request
+grpcTracer:send_RecvTensor_request
+grpcTracer:set_proto_from_gpu_start
+grpcTracer:set_proto_from_gpu_end
+grpcTracer:prepare_response_tensor_start
+grpcTracer:prepare_response_tensor_end
+grpcTracer:send_request_tensor_start
+grpcTracer:send_request_tensor_end
+
+# streamTracer
+streamTracer:memcpy_start
+streamTracer:memcpy_end
+testTracer:start
+testTracer:end
+
+# hcTracer
+hcTracer:kernel_begin
+hcTracer:kernel_end
+hcTracer:kernel_log_begin
+hcTracer:kernel_log_end
+hcTracer:barrier_log_begin
+hcTracer:barrier_log_end
+hcTracer:async_memcpy_log_begin
+hcTracer:async_memcpy_log_end
+hcTracer:async_memcpyslo_log_begin
+hcTracer:async_memcpyslo_log_end
+hcTracer:unpinned_memory_engine_copy_entry
+hcTracer:unpinned_memory_engine_copy_exit
+hcTracer:async_memcpy_begin
+hcTracer:async_memcpy_end
+hcTracer:async_memcpyslo_begin
+hcTracer:async_memcpyslo_end
+hcTracer:barrier_begin
+hcTracer:barrier_end
+hcTracer:queue_stats
+
+# tensorflowTracer
+# Tracepoints : entry / exit
+tensorflowTracer:process_entry
+tensorflowTracer:process_exit
+tensorflowTracer:inline_ready_entry
+tensorflowTracer:inline_ready_exit
+tensorflowTracer:push_succ_entry
+tensorflowTracer:push_succ_exit
+
+# Tracepoints : start / end
+tensorflowTracer:session_start
+tensorflowTracer:session_end
+tensorflowTracer:operation_start
+tensorflowTracer:operation_end
+tensorflowTracer:async_operation_start
+tensorflowTracer:async_operation_end
+tensorflowTracer:rdv_send
+tensorflowTracer:rdv_recv
+
+# Tracepoints : XY Charts
+tensorflowTracer:bfc_allocator_stats
+tensorflowTracer:bfc_chunks_stats
+tensorflowTracer:bfc_bins_stats
+tensorflowTracer:memory_allocate
+tensorflowTracer:memory_deallocate
+lttng_python:event
+
+# cudaTracer
+cudaTracer:runtime_api_entry
+cudaTracer:runtime_api_exit
+cudaTracer:driver_api_entry
+cudaTracer:driver_api_exit
+cudaTracer:kernel_begin
+cudaTracer:kernel_end
+cudaTracer:kernel_queued
+cudaTracer:memcpy_begin
+cudaTracer:memcpy_end
